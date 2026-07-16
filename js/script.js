@@ -31,7 +31,7 @@ loadLeagues().then(() => {
 // Loads (year)_ranked.json for the selected draft year.
 
 function loadComps(year) {
-    return fetch(`../data/ranked_${year}.json?v=${Date.now()}`)
+    return fetch(`./data/ranked_${year}.json?v=${Date.now()}`)
         .then(response => {
 
             if (!response.ok) {
@@ -110,7 +110,7 @@ function getDisplayTeams(player) {
 
 function loadLeagues() {
 
-    return fetch("../data/league_weights.json")
+    return fetch("./data/league_weights.json")
         .then(response => response.json())
         .then(data => {
             allowedLeagues = Object.keys(data);
@@ -194,7 +194,7 @@ function getFlag(country) {
 
 function loadPlayers(year) {
 
-    fetch(`../data/ranked_${year}.json`)
+    fetch(`./data/ranked_${year}.json`)
 
         .then(response => response.json())
 
