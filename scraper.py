@@ -1,11 +1,11 @@
 import requests
 import json
 import time
-
+import os
 
 # Config
 
-API_KEY = "pmx_097eb4b7d3702bd4861d94bfcaad1b4b"
+API_KEY = os.getenv("EP_API_KEY")
 
 YEAR = 2027    #Default is 2027, but can take input when you run it manually.
 
