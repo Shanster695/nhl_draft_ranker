@@ -1,7 +1,6 @@
-/*
-    Stores loaded player data, current draft year,
-    available leagues, and comparison data.
-*/
+/* Stores loaded player data, current draft year,
+    available leagues, and comparison data.*/
+
 
 let allPlayers = [];
 
@@ -14,20 +13,13 @@ let allComps = {};
 let currentSort = "";
 let sortAscending = true;
 
-/*
-    Determines player categories used throughout
-    the application.
-*/
+// Special determination if the player is a skater or a goalie.
 
 function isGoalie(player) {
     return (player.position ?? []).includes("G");
 }
 
-
-/*
-    Application Startup
-    Loads required data before displaying rankings.
-*/
+// Loads required data before displaying rankings.
 
 loadLeagues().then(() => {
 
@@ -36,14 +28,9 @@ loadLeagues().then(() => {
 
 });
 
-
-/*
- Loads JSON for the selected
-    draft year.
-*/
+// Loads (year)_ranked.json for the selected draft year.
 
 function loadComps(year) {
-
     return fetch(`../data/ranked_${year}.json?v=${Date.now()}`)
         .then(response => {
 
@@ -74,17 +61,14 @@ function loadComps(year) {
 }
 
 
-/*
-    Team Filtering
-    Returns only teams belonging to leagues
-    included in league_weights.json. If leagues are added to the json file, this will still find them....hopefully.
+/*  Returns only teams belonging to leagues included in league_weights.json. 
+    If leagues are added to the json file, this will still (hopefully) find them. So, go ahead and add the Slovakian third league, if you wish.
 */
 
 function getDisplayTeams(player) {
 
     const teams =
         player.performanceStats?.teams ?? [];
-
 
     return teams
         .filter(
@@ -93,15 +77,13 @@ function getDisplayTeams(player) {
         .sort(
             (a, b) => {
 
-                // newest season first
+                // newest season displays first
                 const seasonCompare =
                     b.season.localeCompare(a.season);
-
 
                 if (seasonCompare !== 0) {
                     return seasonCompare;
                 }
-
 
                 // If a player has stats from more than one league in the same season
                 // prioritize strongest league
@@ -120,29 +102,20 @@ function getDisplayTeams(player) {
                         x.league === b.league
                     )?.weight ?? 0;
 
-
                 return leagueB - leagueA;
-
             }
         );
-
-}
+    }
 
 
 function loadLeagues() {
 
     return fetch("../data/league_weights.json")
-
         .then(response => response.json())
-
         .then(data => {
-
             allowedLeagues = Object.keys(data);
-
         })
-
         .catch(error => {
-
             console.error(
                 "League loading failed:",
                 error
@@ -151,9 +124,8 @@ function loadLeagues() {
 }
 
 
-/*
-    Calculates current player age from
-    date of birth to today. This was weirdly a pain in the ass
+/* Calculates current player age from date of birth to today. 
+This was weirdly a pain in the ass
 */
 
 function calculateAge(dateOfBirth) {
@@ -178,15 +150,14 @@ function calculateAge(dateOfBirth) {
 
 }
 
-
 /*
     Nationality Flags
     Converts country names into flag icons.
     I DID NOT KNOW YOU COULD DO THIS UNTIL I STARTED WORKING ON THIS. Same with the coloured emojis.
+    Feel free to add more country codes to your fork.
 */
 
 function getFlag(country) {
-
     const flags = {
 
         "Canada": "ca",
@@ -208,25 +179,18 @@ function getFlag(country) {
         "Belarus": "by",
         "Kazakhstan": "kz",
         "Ukraine": "ua"
-
     };
 
     const code = flags[country];
-
     if (!code) {
-
         return "";
-
     }
 
     return `<span class="fi fi-${code}"></span>`;
-
 }
 
-/*
-    Loads ranked player JSON and populates
-    the table.
-*/
+
+// Loads ranked player JSON and populates the table.
 
 function loadPlayers(year) {
 
@@ -255,11 +219,7 @@ function loadPlayers(year) {
 
 }
 
-/*
-    Reloads player rankings when the selected
-    draft year changes.
-*/
-
+    // Reloads player rankings when the selected draft year changes.
 document
     .getElementById("draft-year")
     .addEventListener(
@@ -274,9 +234,7 @@ document
     );
 
 
-/*
-    Adds visual badges to notable prospects. At the moment, only flags top 10 players.
-*/
+// Adds visual badges to notable prospects. At the moment, only flags top 10 players. You could add things like 'highest scoring in league' or 'highest scorer in draft class'
 
 function addPlayerBadges() {
 
@@ -284,9 +242,7 @@ function addPlayerBadges() {
 
         player.badges = [];
 
-
         if (player.customRank <= 10) {
-
             player.badges.push(
                 "&#128293; Top 10 Prospect"
             );
@@ -297,39 +253,28 @@ function addPlayerBadges() {
 
 }
 
-
-/*
-    Detects player links and opens
-    the selected player's profile card
-*/
+   // Detects player links and opens the selected player's profile card
 
 document.addEventListener(
     "click",
     function (event) {
-
-
         if (
             event.target.classList.contains(
                 "player-link"
             )
         ) {
 
-
             event.preventDefault();
-
 
             const name =
                 event.target.dataset.name;
-
 
             const player =
                 allPlayers.find(
                     p => p.name === name
                 );
 
-
             showPlayer(player);
-
         }
 
     }
@@ -346,27 +291,24 @@ document.addEventListener(
 */
 
 function getLeagueScores(player) {
-
     return player.leagueBreakdown ?? [];
-
 }
 
 
-/*
-    Builds the player's scouting card
-*/
+
+/*Builds the player's scouting card
+This is a pretty cool example of JS building an HTML table with dynamic data from the ranker.
+What a silly language.*/
 
 function showPlayer(player) {
 
     if (!player)
         return;
 
-
     const breakdown = player.scoreBreakdown ?? {};
 
     const isDefenseman =
         (player.position ?? []).includes("D");
-
 
     const leagueScores =
         getLeagueScores(player)
@@ -374,10 +316,7 @@ function showPlayer(player) {
         .sort((a, b) => {
 
             return b.season.localeCompare(a.season);
-
         });
-
-
 
     document.getElementById(
         "profile-content"
@@ -395,14 +334,11 @@ ${player.name}
 </a>
 </h2>
 
-
 <h3>
 Rank #${player.customRank}
 </h3>
 
-
 <div class="badges">
-
 ${
 (player.badges ?? [])
 .map(
@@ -412,7 +348,6 @@ b => `<span class="badge">${b}</span>`
 }
 
 </div>
-
 
 <p>
 ${getFlag(player.nationality)}
@@ -430,7 +365,6 @@ Age:
 ${calculateAge(player.dateOfBirth)}
 </p>
 
-
 <p>
 Height:
 ${player.height ?? "N/A"}
@@ -438,7 +372,6 @@ ${player.height ?? "N/A"}
 Weight:
 ${player.weight ?? "N/A"} lbs
 </p>
-
 
 <p>
 <b>Size Profile:</b>
@@ -448,9 +381,7 @@ ${breakdown.sizeProfile ?? "Average"}
 
 </div>
 
-
-
-<div class="profile-scouting">
+<div class="profile-scouting">  
 
 
 <h3 class="section-title">
@@ -475,19 +406,15 @@ ${Number(player.draftScore ?? 0).toFixed(2)}
 
 </div>
 
-
-
 <p>
 <b>Player Type:</b>
 ${player.playerType ?? "Unknown"}
 </p>
 
-
 <p>
 <b>Projected Role:</b>
 ${player.projection?.role ?? ""}
 </p>
-
 
 ${
 player.projection?.summary
@@ -517,7 +444,6 @@ Adjustments are applied as multipliers to the base production score.
 <span>${Number(breakdown.production ?? 0).toFixed(1)}</span>
 </div>
 
-
 <div class="score-row">
 <span class="tooltip" data-tooltip="League strength multiplier. Players producing in stronger leagues receive more value because competition level is higher.">League Strength</span>
 <span>
@@ -525,28 +451,24 @@ Adjustments are applied as multipliers to the base production score.
 ${
 (player.leagueBreakdown ?? [])
 
-.map(
-
-l => `
-
-<div class="league-weight-row">
-
-    <span>
-        ${l.league}
-    </span>
-
-    <span>
-        x${Number(l.weight ?? 1).toFixed(2)}
-    </span>
+    .map(
+    
+    l => `
+    
+    <div class="league-weight-row">
+    
+        <span>
+            ${l.league}
+        </span>
+    
+        <span>
+            x${Number(l.weight ?? 1).toFixed(2)}
+        </span>
 
 </div>
-
 `
-
 )
-
 .join("")
-
 }
 
 </span>
@@ -592,19 +514,16 @@ l => `
 <span>x${Number(breakdown.plusMinus ?? 1).toFixed(2)}</span>
 </div>
 
-
 ${
 isDefenseman
 ?
 `
-
 <div class="score-row">
 <span class="tooltip" data-tooltip="Additional adjustment due to the relative scarcity of high-end defense prospects.">Defense Rarity</span>
 <span>
 x${Number(breakdown.defenseRarity ?? 1).toFixed(2)}
 </span>
 </div>
-
 
 <div class="score-row">
 <span class="tooltip" data-tooltip="Additional boost for being a right-handed defenseman. Parents: teach your kids to play righty!">RHD Bonus</span>
@@ -618,7 +537,6 @@ x${Number(breakdown.rhd ?? 1).toFixed(2)}
 ""
 }
 
-
 </div>
 
 <hr>
@@ -629,10 +547,8 @@ Season History
 
 <div class="season-history">
 
-
 ${
 leagueScores.map(t => `
-
 
 <p>
 
@@ -677,12 +593,9 @@ Draft Contribution:
 ${Number(t.weightedPoints ?? 0).toFixed(2)}
 </b>
 
-
 </p>
 
-
 <hr>
-
 
 `).join("")
 }
@@ -692,8 +605,6 @@ ${Number(t.weightedPoints ?? 0).toFixed(2)}
 `;
 
     //That was a big function...
-
-
 
     //Custom function to draw stars for draft ranking. CSS does the filling. There are unicodes for empty stars and full stars, but not half-filled.
     function renderStars(value) {
