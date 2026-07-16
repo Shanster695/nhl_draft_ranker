@@ -124,10 +124,18 @@ A summary of player traits generated from the evaluation system.
 # Score Breakdown
 A detailed breakdown of the bonuses, penalties, and multipliers applied to the player's final Draft Score.
 
-# Configuration
-Many ranking factors are adjustable through external JSON configuration files:
+## Model Configuration
+The ranking model is intentionally transparent. All scoring weights and league adjustments are stored in external JSON configuration files.
+Users can fork the project and create their own ranking model by adjusting these values.
 
-- `data/league_weights.json` - league strength multipliers
-- `data/ranking_config.json` - scoring weights, bonuses, thresholds, and reliability settings
+When you download it, you will have to run scraper.py, which will generate a "draft_(YEAR).json" file. Then run ranker.py which will apply the ranking tool and output "ranked_(YEAR).json." The website itself grabs data from the ranked.json file.
 
-This allows the ranking tool to be tuned how you like!
+## Data Updates
+The ranking system uses Actions to periodically refresh prospect data.
+
+1. Collects updated prospect information and statistics
+2. Processes the data through the ranking system
+3. Generates updated ranking JSON files
+4. Commits the refreshed data for the website to display
+
+Because prospect evaluations change throughout the season, rankings may shift as new information becomes available. At the time of writing, there are only 87 ranked 2027 prospects, 29 2028 prospects, and 3 2029 prospects (two of which are on the same team...).
