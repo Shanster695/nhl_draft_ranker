@@ -6,7 +6,12 @@ import os
 API_KEY = os.getenv("EP_API_KEY")
 
 #Default is year 2027. Can update to any year that currently exists at eliteprospects.com/draft-center/(year)
-YEAR = 2027
+YEAR = int(
+    os.getenv(
+        "DRAFT_YEAR",
+        2027
+    )
+)
 
 OUTPUT_FILE = (
     f"data/draft_{YEAR}.json"
