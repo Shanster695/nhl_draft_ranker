@@ -4,10 +4,6 @@ import math
 
 
 """
-NHL Draft Prospect Ranker
-
-Fixed Version
-
 Features:
 - Loads draft eligible players
 - Applies league strength weighting
@@ -27,7 +23,12 @@ Features:
 # CONFIG
 # ==================================================
 
-DRAFT_YEAR = 2029
+DRAFT_YEAR = int(
+    os.getenv(
+        "DRAFT_YEAR",
+        2027
+    )
+)
 
 INPUT_FILE = f"data/draft_{DRAFT_YEAR}.json"
 OUTPUT_FILE = f"data/ranked_{DRAFT_YEAR}.json"
