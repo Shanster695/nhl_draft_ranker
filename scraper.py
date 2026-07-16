@@ -1,17 +1,13 @@
 import requests
 import json
 import time
-import os
 
-API_KEY = os.getenv("EP_API_KEY")
 
-#Default is year 2027. Can update to any year that currently exists at eliteprospects.com/draft-center/(year)
-YEAR = int(
-    os.getenv(
-        "DRAFT_YEAR",
-        2027
-    )
-)
+# Config
+
+API_KEY = "pmx_097eb4b7d3702bd4861d94bfcaad1b4b"
+
+YEAR = 2027    #Default is 2027, but can take input when you run it manually.
 
 OUTPUT_FILE = (
     f"data/draft_{YEAR}.json"
@@ -22,10 +18,9 @@ GRAPHQL_URL = (
 )
 
 
-
-# =========================
-# PARSE API
-# =========================
+# Parse API.
+# EliteProspects has core stats from the most recent team/season the draft center page, but biographical info and stats like +/- and PIM are kept on each
+# respective player's profile page, so there are actually two scrapes.
 
 
 def get_draft_class(year):
@@ -51,16 +46,13 @@ def get_draft_class(year):
 
     data = r.json()
 
-    # =========================
-    # FIX: HANDLE API STRUCTURE CHANGES
-    # =========================
 
     if isinstance(data, list):
         return data
 
     if isinstance(data, dict):
 
-        # old expected format
+        # old format
         if "data" in data and isinstance(data["data"], dict):
             if "prospects" in data["data"]:
                 return data["data"]["prospects"]
@@ -69,7 +61,7 @@ def get_draft_class(year):
         if "prospects" in data:
             return data["prospects"]
 
-    print("⚠️ Unexpected API format:")
+    print("Unexpected API format:")
     print(json.dumps(data, indent=2)[:1000])
 
     return []
@@ -77,10 +69,7 @@ def get_draft_class(year):
 
 
 
-# =========================
-# GRAPHQL
-# =========================
-
+# GraphQL
 
 HEADERS = {
 
@@ -105,8 +94,6 @@ HEADERS = {
 
 
 def get_stats(player_id):
-
-
     params = {
 
         "operationName":
@@ -169,187 +156,6 @@ def get_stats(player_id):
         return None
 
 
-def get_player_details(player_id):
-
-    params = {
-
-        "operationName":
-        "PlayerProfile",
-
-        "variables":
-        json.dumps({
-            "player": str(player_id)
-        }),
-
-        "extensions":
-        json.dumps({
-
-            "persistedQuery": {
-
-                "version": 1,
-
-                "sha256Hash":
-                "PUT_PROFILE_HASH_HERE"
-
-            }
-
-        })
-
-    }
-
-
-    try:
-
-        r = requests.get(
-            GRAPHQL_URL,
-            headers=HEADERS,
-            params=params,
-            timeout=20
-        )
-
-
-        if r.status_code != 200:
-            return {}
-
-
-        return r.json()
-
-
-    except Exception as e:
-
-        print(
-            "Profile error:",
-            e
-        )
-
-    return {}
-
-# =========================
-# PARSE STATS
-# =========================
-
-
-
-    if not data:
-        return {}
-
-    blocks = []
-
-    def walk(obj):
-
-        if isinstance(obj, dict):
-
-            if "GP" in obj:
-                blocks.append(obj)
-
-            for value in obj.values():
-                walk(value)
-
-        elif isinstance(obj, list):
-
-            for item in obj:
-                walk(item)
-
-    walk(data)
-
-    if not blocks:
-        return {}
-
-    goalie_blocks = [
-        b for b in blocks
-        if (
-            "SV%" in b
-            or "GAA" in b
-            or "SO" in b
-        )
-    ]
-
-    skater_blocks = [
-        b for b in blocks
-        if (
-            "PTS" in b
-            or "G" in b
-            or "A" in b
-        )
-    ]
-
-
-    # =========================
-    # GOALIE
-    # =========================
-
-    if goalie_blocks:
-
-        best = max(
-            goalie_blocks,
-            key=lambda x: int(x.get("GP") or 0)
-        )
-
-        return {
-
-            "gp":
-            best.get("GP") or 0,
-
-            "goals": 0,
-            "assists": 0,
-            "points": 0,
-
-            "pim":
-            best.get("PIM") or 0,
-
-            "plusMinus":
-            None,
-
-            "savePercentage":
-            best.get("SV%"),
-
-            "goalsAgainstAverage":
-            best.get("GAA"),
-
-            "shutouts":
-            best.get("SO") or 0,
-
-            "wins":
-            best.get("W") or 0,
-
-            "losses":
-            best.get("L") or 0
-        }
-
-
-    # =========================
-    # SKATER
-    # =========================
-
-    if skater_blocks:
-
-        best = max(
-            skater_blocks,
-            key=lambda x: int(x.get("GP") or 0)
-        )
-
-        return {
-
-            "gp":
-            best.get("GP") or 0,
-
-            "goals":
-            best.get("G") or 0,
-
-            "assists":
-            best.get("A") or 0,
-
-            "points":
-            best.get("PTS") or 0,
-
-            "pim":
-            best.get("PIM") or 0,
-
-            "plusMinus":
-            best.get("PM")
-        }
-
-    return {}
 
 def parse_stats(data):
 
@@ -390,12 +196,11 @@ def parse_stats(data):
 
 
 
-        # =========================
-        # DETECT GOALIE
-        # =========================
+        # Goalie stats are on a different page than the draft center, so this requires a separate section entirely.
+        # Goalies are weirdd, man
 
         is_goalie = (
-            stats.get("SV%") is not None
+            stats.get("SVP") is not None
             or stats.get("GAA") is not None
             or stats.get("SO") is not None
         )
@@ -501,14 +306,9 @@ def parse_stats(data):
 
 
 
-    # =========================
-    # ONLY KEEP MOST RECENT SEASON
-    # =========================
 
 
-    # =========================
-# KEEP MOST RECENT TWO SEASONS
-# =========================
+    # Keeps the stats of all teams in the most recent two seasons.
 
     seasons = sorted(
         list(
@@ -541,17 +341,24 @@ def parse_stats(data):
 
 
         "teams":
-        rows
+        rows,
+
+        "plusMinus":
+        sum(
+            r.get("plusMinus", 0)
+            for r in rows
+            if r.get("plusMinus") is not None
+        )
 
     }
 
 
-# =========================
-# RUN
-# =========================
+# Run!
 
 
 players = get_draft_class(YEAR)
+
+print(json.dumps(players[0], indent=4))
 
 print("Players:", len(players))
 
@@ -564,17 +371,15 @@ for i, player in enumerate(players):
         player["name"]
     )
 
+
     stats = get_stats(player["id"])
 
-    parsed = parse_stats(stats)
-    
-    details = get_player_details(
-        player["id"]
-    )
+    if stats is None:
+        print("No stats found for", player["name"])
+        parsed = {}
+    else:
+        parsed = parse_stats(stats)
 
-
-    # Add profile information
-    player.update(details)
 
 
     if "performanceStats" not in player:
@@ -596,9 +401,7 @@ for i, player in enumerate(players):
 
 
 
-# =========================
-# SAVE
-# =========================
+#Save output
 
 
 with open(
