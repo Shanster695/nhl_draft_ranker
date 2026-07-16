@@ -3,8 +3,8 @@ A tool to calculate draft rankings for the next three NHL drafts. The tool ranks
 You can also run the tool for 2028 and 2029 drafts at the current time, but it is not quite as accurate. The default year is 2027.
 
 # How It Works
-The tool uses (not very well written) Python scripts to collect and process NHL draft prospect data from [Elite Prospects](www.eliteprospects.com). This would not be possible without the help of [ParseBot](https://parse.bot/marketplace/3ba08450-29f5-4688-9c03-6662454abb2f/eliteprospects-com-api)
-The initial data collection retrieves draft-eligible players, including basic information such as name, position, nationality, and draft eligibility information.
+The tool uses (not very well written) Python scripts to collect and process NHL draft prospect data from [Elite Prospects](https://www.eliteprospects.com). This would not be possible without the help of [ParseBot](https://parse.bot/marketplace/3ba08450-29f5-4688-9c03-6662454abb2f/eliteprospects-com-api)
+The initial data collection retrieves draft-eligible players, including basic profile information such as name, position, nationality, height and weight.
 Because complete player information is distributed across multiple sources, additional data collection is required for each prospect. This includes profile information such as height, weight, shooting side, date of birth, and historical statistics.
 The collected data is then normalized into a consistent JSON format and passed into the ranking system, which evaluates each player using league strength, production, position, physical profile, and other contextual factors.
 
@@ -23,18 +23,18 @@ A player's score is generated through several stages:
 6. Final ranking
 
 Weighted Production =
-Raw Production × League Multiplier × Season Weight
-
+Raw Production × League Multiplier × Season Weight × Context Adjustments
 
 ## Production Score
 Skater production is calculated using:
 
 √(Points + Goals + Assists) × 10
 
-The square root prevents extremely high point totals from overwhelming all other evaluation factors while still rewarding offensive production.
+The square root prevents extremely high point totals from overwhelming all other evaluation factors while still rewarding offensive production. Goals are valued slightly higher than assists.
 
 ## League Strength
-A player producing in a stronger league receives more value than a player producing identical numbers in a weaker league. For example, a player that dominates the KHL, a league containing many older players, has a slight boost when compared to a player that dominates the MHL or VHL.
+A player producing against older professional competition receives more value than identical production in a lower-level junior league (KHL vs MHL vs VHL, for example.)
+
 League multipliers are stored externally in:
 data/league_weights.json
 
@@ -72,7 +72,7 @@ The system recognizes profiles such as:
 
 - Elite Size (6'3", 195 lbs and up)
 - Large Frame (6'1", 175 lbs and up)
-- Undersized Skill (5'8" and up, but a PPG > 0.9)
+- Undersized Skill (5'10" or shorter, but a PPG > 0.9)
 
 Size alone does not increase a player's ranking, but is used as a bonus. This also helps determine player type.
 
@@ -103,9 +103,9 @@ The final numerical ranking value.
 # Projection
 - Star rating
 - Expected NHL role
-- Confidence level (i.e., how much statistical evidence there is to make these projections)
-      - High Confidence: Player has a significant statistical sample (50+ games for skaters, 30+ games for goalies)
-      - Medium Confidence: Player has a smaller or developing statistical sample
+- Confidence level (how much statistical evidence supports the projection)
+    - High Confidence: Player has a significant statistical sample (50+ games for skaters, 30+ games for goalies)
+    - Medium Confidence: Player has a smaller or developing statistical sample
 
 # Player Type
 Automatically generated archetype:
@@ -119,4 +119,15 @@ Examples:
 - Shutdown Defenseman
 
 # Scouting Report
-A breakdown of all the above calculations, and which bonuses and penalties are being applied.
+A summary of player traits generated from the evaluation system.
+
+# Score Breakdown
+A detailed breakdown of the bonuses, penalties, and multipliers applied to the player's final Draft Score.
+
+# Configuration
+Many ranking factors are adjustable through external JSON configuration files:
+
+- `data/league_weights.json` - league strength multipliers
+- `data/ranking_config.json` - scoring weights, bonuses, thresholds, and reliability settings
+
+This allows the ranking tool to be tuned how you like!
