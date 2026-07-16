@@ -1,15 +1,12 @@
 import requests
 import json
 import time
+import os
 
+API_KEY = os.getenv("EP_API_KEY")
 
-# =========================
-# CONFIG
-# =========================
-
-API_KEY = "pmx_097eb4b7d3702bd4861d94bfcaad1b4b"
-
-YEAR = 2029
+#Default is year 2027. Can update to any year that currently exists at eliteprospects.com/draft-center/(year)
+YEAR = 2027
 
 OUTPUT_FILE = (
     f"data/draft_{YEAR}.json"
