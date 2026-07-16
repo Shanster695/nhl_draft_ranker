@@ -4,7 +4,11 @@ on:
   schedule:
     - cron: "0 12 1 * *"
   workflow_dispatch:
-
+    inputs:
+      draft_year:
+        description: "Draft year to scrape"
+        required: true
+        default: "2027"
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -26,10 +30,13 @@ jobs:
       - name: Run scraper
         env:
           EP_API_KEY: ${{ secrets.EP_API_KEY }}
+          DRAFT_YEAR: ${{ github.event.inputs.draft_year }}
         run: |
           python scraper.py
 
       - name: Run ranker
+        env:
+          DRAFT_YEAR: ${{ github.event.inputs.draft_year }}
         run: |
           python ranker.py
 
