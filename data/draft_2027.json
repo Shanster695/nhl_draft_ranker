@@ -57,7 +57,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701503/landon-dupont"
+        "url": "https://www.eliteprospects.com/player/701503/landon-dupont",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -128,7 +136,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/628056/jaxon-jacobson"
+        "url": "https://www.eliteprospects.com/player/628056/jaxon-jacobson",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -199,7 +215,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701451/alexis-joseph"
+        "url": "https://www.eliteprospects.com/player/701451/alexis-joseph",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -292,7 +316,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/978956/carter-meyer"
+        "url": "https://www.eliteprospects.com/player/978956/carter-meyer",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -407,7 +439,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/863816/sammy-nelson"
+        "url": "https://www.eliteprospects.com/player/863816/sammy-nelson",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -490,7 +530,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/993675/nazar-privalov"
+        "url": "https://www.eliteprospects.com/player/993675/nazar-privalov",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -627,7 +675,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1010942/milan-sundstrom"
+        "url": "https://www.eliteprospects.com/player/1010942/milan-sundstrom",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -753,7 +809,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/937109/petr-tomek"
+        "url": "https://www.eliteprospects.com/player/937109/petr-tomek",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -813,7 +877,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/628093/dima-zhilkin"
+        "url": "https://www.eliteprospects.com/player/628093/dima-zhilkin",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -835,67 +907,17 @@
             "goals": 2,
             "assists": 16,
             "points": 18,
-            "pim": 16,
-            "season": "2024-25",
-            "teams": [
-                {
-                    "season": "2024-25",
-                    "team": "Ak Bars Kazan U16",
-                    "league": "Russia U16",
-                    "gp": 12,
-                    "goals": 2,
-                    "assists": 4,
-                    "points": 6,
-                    "pim": 2,
-                    "plusMinus": 3
-                },
-                {
-                    "season": "2024-25",
-                    "team": "Ak Bars Kazan U18",
-                    "league": "Russia U18",
-                    "gp": 20,
-                    "goals": 4,
-                    "assists": 4,
-                    "points": 8,
-                    "pim": 10,
-                    "plusMinus": 3
-                },
-                {
-                    "season": "2024-25",
-                    "team": "Russia U16 (all)",
-                    "league": "International-Jr",
-                    "gp": 9,
-                    "goals": 2,
-                    "assists": 6,
-                    "points": 8,
-                    "pim": 2,
-                    "plusMinus": 12
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Ak Bars Kazan U18",
-                    "league": "Russia U18",
-                    "gp": 10,
-                    "goals": 1,
-                    "assists": 1,
-                    "points": 2,
-                    "pim": 6,
-                    "plusMinus": 1
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Irbis Kazan",
-                    "league": "MHL",
-                    "gp": 50,
-                    "goals": 2,
-                    "assists": 16,
-                    "points": 18,
-                    "pim": 16,
-                    "plusMinus": 14
-                }
-            ]
+            "pim": 16
         },
-        "url": "https://www.eliteprospects.com/player/993789/daniyar-aibatov"
+        "url": "https://www.eliteprospects.com/player/993789/daniyar-aibatov",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1010,7 +1032,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1138530/illarion-babkin"
+        "url": "https://www.eliteprospects.com/player/1138530/illarion-babkin",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1070,7 +1100,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/970435/prabh-bhathal"
+        "url": "https://www.eliteprospects.com/player/970435/prabh-bhathal",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1119,7 +1157,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/911642/luca-blonda"
+        "url": "https://www.eliteprospects.com/player/911642/luca-blonda",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1190,7 +1236,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701498/aden-bouchard"
+        "url": "https://www.eliteprospects.com/player/701498/aden-bouchard",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1327,7 +1381,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/917651/dominick-byrtus"
+        "url": "https://www.eliteprospects.com/player/917651/dominick-byrtus",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1442,7 +1504,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/879926/max-calce"
+        "url": "https://www.eliteprospects.com/player/879926/max-calce",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1502,7 +1572,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701350/brock-chitaroni"
+        "url": "https://www.eliteprospects.com/player/701350/brock-chitaroni",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1573,7 +1651,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701389/brock-cripps"
+        "url": "https://www.eliteprospects.com/player/701389/brock-cripps",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1644,7 +1730,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/871017/noah-davidson"
+        "url": "https://www.eliteprospects.com/player/871017/noah-davidson",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1781,7 +1875,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1049432/ryerson-edgar"
+        "url": "https://www.eliteprospects.com/player/1049432/ryerson-edgar",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1886,7 +1988,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/971366/dorian-eklund-aspe"
+        "url": "https://www.eliteprospects.com/player/971366/dorian-eklund-aspe",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -1968,7 +2078,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/967191/brock-england"
+        "url": "https://www.eliteprospects.com/player/967191/brock-england",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2132,7 +2250,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/690041/nolan-fitzhenry"
+        "url": "https://www.eliteprospects.com/player/690041/nolan-fitzhenry",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2192,7 +2318,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701460/loik-gariepy"
+        "url": "https://www.eliteprospects.com/player/701460/loik-gariepy",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2263,7 +2397,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/974116/semyon-gerasimov"
+        "url": "https://www.eliteprospects.com/player/974116/semyon-gerasimov",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2368,7 +2510,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/783136/jamie-glance"
+        "url": "https://www.eliteprospects.com/player/783136/jamie-glance",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2417,7 +2567,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/860250/shaeffer-gordon-carroll"
+        "url": "https://www.eliteprospects.com/player/860250/shaeffer-gordon-carroll",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2510,7 +2668,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701427/diego-gutierrez"
+        "url": "https://www.eliteprospects.com/player/701427/diego-gutierrez",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2581,7 +2747,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/747321/levi-harper"
+        "url": "https://www.eliteprospects.com/player/747321/levi-harper",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2719,7 +2893,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/982803/michal-hartl"
+        "url": "https://www.eliteprospects.com/player/982803/michal-hartl",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2801,7 +2983,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701506/ben-harvey"
+        "url": "https://www.eliteprospects.com/player/701506/ben-harvey",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2861,7 +3051,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/896023/adam-israilov"
+        "url": "https://www.eliteprospects.com/player/896023/adam-israilov",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -2932,7 +3130,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/940928/luca-jarvis"
+        "url": "https://www.eliteprospects.com/player/940928/luca-jarvis",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -3069,7 +3275,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1063798/douglas-johnsson"
+        "url": "https://www.eliteprospects.com/player/1063798/douglas-johnsson",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -3217,7 +3431,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/917756/lukas-kachlir"
+        "url": "https://www.eliteprospects.com/player/917756/lukas-kachlir",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -3425,7 +3647,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/891171/timothy-kazda"
+        "url": "https://www.eliteprospects.com/player/891171/timothy-kazda",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -3551,7 +3781,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1113813/lenni-kokkonen"
+        "url": "https://www.eliteprospects.com/player/1113813/lenni-kokkonen",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -3611,7 +3849,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/896021/ilya-kolmakov"
+        "url": "https://www.eliteprospects.com/player/896021/ilya-kolmakov",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -3682,7 +3928,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1121225/ilya-kolomytsev"
+        "url": "https://www.eliteprospects.com/player/1121225/ilya-kolomytsev",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -3764,7 +4018,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/995203/roman-kozhevnikov"
+        "url": "https://www.eliteprospects.com/player/995203/roman-kozhevnikov",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -3835,7 +4097,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1092115/aleks-kulemin"
+        "url": "https://www.eliteprospects.com/player/1092115/aleks-kulemin",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -3972,7 +4242,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1032870/roni-kuukasjarvi"
+        "url": "https://www.eliteprospects.com/player/1032870/roni-kuukasjarvi",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4054,7 +4332,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/908578/malik-l-italien"
+        "url": "https://www.eliteprospects.com/player/908578/malik-l-italien",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4114,7 +4400,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/970455/tyden-lafournaise"
+        "url": "https://www.eliteprospects.com/player/970455/tyden-lafournaise",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4174,7 +4468,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1022121/brenner-lammens"
+        "url": "https://www.eliteprospects.com/player/1022121/brenner-lammens",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4289,7 +4591,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1032879/miska-liljeberg"
+        "url": "https://www.eliteprospects.com/player/1032879/miska-liljeberg",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4371,7 +4681,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/955081/oskars-luks"
+        "url": "https://www.eliteprospects.com/player/955081/oskars-luks",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4431,7 +4749,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/966511/crew-martinson"
+        "url": "https://www.eliteprospects.com/player/966511/crew-martinson",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4502,7 +4828,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701314/kaden-mcgregor"
+        "url": "https://www.eliteprospects.com/player/701314/kaden-mcgregor",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4562,7 +4896,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701508/ossie-mcintyre"
+        "url": "https://www.eliteprospects.com/player/701508/ossie-mcintyre",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4622,7 +4964,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/878384/eli-mckamey"
+        "url": "https://www.eliteprospects.com/player/878384/eli-mckamey",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4770,7 +5120,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/876780/bosse-meijer"
+        "url": "https://www.eliteprospects.com/player/876780/bosse-meijer",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4792,56 +5150,17 @@
             "goals": 5,
             "assists": 13,
             "points": 18,
-            "pim": 12,
-            "season": "2024-25",
-            "teams": [
-                {
-                    "season": "2024-25",
-                    "team": "Don Mills Flyers U16 AAA",
-                    "league": "GTHL U16",
-                    "gp": 32,
-                    "goals": 21,
-                    "assists": 19,
-                    "points": 40,
-                    "pim": 8,
-                    "plusMinus": null
-                },
-                {
-                    "season": "2024-25",
-                    "team": "Don Mills Flyers U16 AAA",
-                    "league": "U16 AAA",
-                    "gp": 76,
-                    "goals": 50,
-                    "assists": 47,
-                    "points": 97,
-                    "pim": 26,
-                    "plusMinus": 97
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Flint Firebirds",
-                    "league": "OHL",
-                    "gp": 59,
-                    "goals": 5,
-                    "assists": 13,
-                    "points": 18,
-                    "pim": 12,
-                    "plusMinus": 7
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Canada Red U17",
-                    "league": "WHC-17",
-                    "gp": 5,
-                    "goals": 4,
-                    "assists": 6,
-                    "points": 10,
-                    "pim": 6,
-                    "plusMinus": null
-                }
-            ]
+            "pim": 12
         },
-        "url": "https://www.eliteprospects.com/player/987179/charlie-murata"
+        "url": "https://www.eliteprospects.com/player/987179/charlie-murata",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -4978,7 +5297,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1008169/roberts-naudins"
+        "url": "https://www.eliteprospects.com/player/1008169/roberts-naudins",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5093,7 +5420,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/986792/adam-nemec"
+        "url": "https://www.eliteprospects.com/player/986792/adam-nemec",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5274,7 +5609,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/709625/jonah-neuenschwander"
+        "url": "https://www.eliteprospects.com/player/709625/jonah-neuenschwander",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5366,7 +5709,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1047895/ilja-nikitins"
+        "url": "https://www.eliteprospects.com/player/1047895/ilja-nikitins",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5458,7 +5809,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/993101/andrei-nikolayev"
+        "url": "https://www.eliteprospects.com/player/993101/andrei-nikolayev",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5562,7 +5921,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/918588/oliver-ozogany"
+        "url": "https://www.eliteprospects.com/player/918588/oliver-ozogany",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5644,7 +6011,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701312/rocco-pelosi"
+        "url": "https://www.eliteprospects.com/player/701312/rocco-pelosi",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5726,7 +6101,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/978951/jake-prunty"
+        "url": "https://www.eliteprospects.com/player/978951/jake-prunty",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5787,7 +6170,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/996108/andrei-pustovoy"
+        "url": "https://www.eliteprospects.com/player/996108/andrei-pustovoy",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5847,7 +6238,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/886974/samuel-rheault"
+        "url": "https://www.eliteprospects.com/player/886974/samuel-rheault",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -5870,111 +6269,17 @@
             "goals": 7,
             "assists": 5,
             "points": 12,
-            "pim": 0,
-            "season": "2024-25",
-            "teams": [
-                {
-                    "season": "2024-25",
-                    "team": "Kiekko-Espoo U16",
-                    "league": "U16 SM-sarja",
-                    "gp": 4,
-                    "goals": 6,
-                    "assists": 9,
-                    "points": 15,
-                    "pim": 2,
-                    "plusMinus": null
-                },
-                {
-                    "season": "2024-25",
-                    "team": "Kiekko-Espoo U18",
-                    "league": "U18 SM-sarja",
-                    "gp": 38,
-                    "goals": 20,
-                    "assists": 16,
-                    "points": 36,
-                    "pim": 8,
-                    "plusMinus": null
-                },
-                {
-                    "season": "2024-25",
-                    "team": "Finland U16 (all)",
-                    "league": "International-Jr",
-                    "gp": 16,
-                    "goals": 16,
-                    "assists": 13,
-                    "points": 29,
-                    "pim": 2,
-                    "plusMinus": 4
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Kiekko-Espoo U18",
-                    "league": "U18 SM-sarja",
-                    "gp": 17,
-                    "goals": 12,
-                    "assists": 10,
-                    "points": 22,
-                    "pim": 2,
-                    "plusMinus": null
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Kiekko-Espoo U20",
-                    "league": "U20 SM-sarja",
-                    "gp": 25,
-                    "goals": 7,
-                    "assists": 5,
-                    "points": 12,
-                    "pim": 0,
-                    "plusMinus": 8
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Finland U17",
-                    "league": "WHC-17",
-                    "gp": 4,
-                    "goals": 1,
-                    "assists": 4,
-                    "points": 5,
-                    "pim": 2,
-                    "plusMinus": null
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Finland U17 (all)",
-                    "league": "International-Jr",
-                    "gp": 7,
-                    "goals": 1,
-                    "assists": 5,
-                    "points": 6,
-                    "pim": 2,
-                    "plusMinus": null
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Finland U18",
-                    "league": "WJC-18",
-                    "gp": 5,
-                    "goals": 4,
-                    "assists": 2,
-                    "points": 6,
-                    "pim": 0,
-                    "plusMinus": 1
-                },
-                {
-                    "season": "2025-26",
-                    "team": "Finland U18 (all)",
-                    "league": "International-Jr",
-                    "gp": 14,
-                    "goals": 11,
-                    "assists": 8,
-                    "points": 19,
-                    "pim": 2,
-                    "plusMinus": null
-                }
-            ]
+            "pim": 0
         },
-        "url": "https://www.eliteprospects.com/player/1009106/luca-santala"
+        "url": "https://www.eliteprospects.com/player/1009106/luca-santala",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6023,7 +6328,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/628072/rhett-sather"
+        "url": "https://www.eliteprospects.com/player/628072/rhett-sather",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6127,7 +6440,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1057262/daniil-savin"
+        "url": "https://www.eliteprospects.com/player/1057262/daniil-savin",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6187,7 +6508,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701457/james-scantlebury"
+        "url": "https://www.eliteprospects.com/player/701457/james-scantlebury",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6280,7 +6609,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/993668/vladimir-shtyrkhunov"
+        "url": "https://www.eliteprospects.com/player/993668/vladimir-shtyrkhunov",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6450,7 +6787,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/742469/paul-sintschnig"
+        "url": "https://www.eliteprospects.com/player/742469/paul-sintschnig",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6521,7 +6866,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/993791/sergei-skvortsov"
+        "url": "https://www.eliteprospects.com/player/993791/sergei-skvortsov",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6570,7 +6923,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701443/nolan-snyder"
+        "url": "https://www.eliteprospects.com/player/701443/nolan-snyder",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6641,7 +7002,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/966892/kayden-stroeder"
+        "url": "https://www.eliteprospects.com/player/966892/kayden-stroeder",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6767,7 +7136,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/978511/oliver-sundberg"
+        "url": "https://www.eliteprospects.com/player/978511/oliver-sundberg",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6838,7 +7215,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/966790/chase-surkan"
+        "url": "https://www.eliteprospects.com/player/966790/chase-surkan",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -6942,7 +7327,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1008855/max-syrjalainen"
+        "url": "https://www.eliteprospects.com/player/1008855/max-syrjalainen",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -7024,7 +7417,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/966908/boston-tait"
+        "url": "https://www.eliteprospects.com/player/966908/boston-tait",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -7117,7 +7518,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/933145/sebastian-taliga"
+        "url": "https://www.eliteprospects.com/player/933145/sebastian-taliga",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -7277,7 +7686,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/1135233/yaroslav-vetrov"
+        "url": "https://www.eliteprospects.com/player/1135233/yaroslav-vetrov",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -7326,7 +7743,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/862359/easton-walos"
+        "url": "https://www.eliteprospects.com/player/862359/easton-walos",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -7397,7 +7822,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701379/camryn-warren"
+        "url": "https://www.eliteprospects.com/player/701379/camryn-warren",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -7480,7 +7913,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/701479/jaakko-wycisk"
+        "url": "https://www.eliteprospects.com/player/701479/jaakko-wycisk",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -7584,7 +8025,15 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/993672/yevgeni-yakunin"
+        "url": "https://www.eliteprospects.com/player/993672/yevgeni-yakunin",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     },
     {
         "rank": null,
@@ -7644,6 +8093,14 @@
                 }
             ]
         },
-        "url": "https://www.eliteprospects.com/player/941332/riley-zupfer"
+        "url": "https://www.eliteprospects.com/player/941332/riley-zupfer",
+        "errors": [
+            {
+                "message": "PersistedQueryNotFound",
+                "extensions": {
+                    "code": "PERSISTED_QUERY_NOT_FOUND"
+                }
+            }
+        ]
     }
 ]
