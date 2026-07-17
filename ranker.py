@@ -4,22 +4,6 @@ import math
 import os
 
 
-"""
-Features:
-- Loads draft eligible players
-- Applies league strength weighting
-- Applies season weighting
-- Calculates weighted production
-- Calculates goalie performance
-- Calculates position value
-- Calculates RHD value
-- Applies sample size reliability
-- Generates projections
-- Generates scouting traits
-- Outputs ranked JSON
-"""
-
-
 # ==================================================
 # CONFIG
 # ==================================================
