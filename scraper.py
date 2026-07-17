@@ -7,7 +7,7 @@ import os
 
 API_KEY = os.getenv("EP_API_KEY")
 
-DRAFT_YEAR = int( os.getenv( "DRAFT_YEAR", 2027 ) )    #Default is 2027, but can take input when you run it manually.
+YEAR = int( os.getenv( "DRAFT_YEAR", 2027 ) )    #Default is 2027, but can take input when you run it manually.
 
 OUTPUT_FILE = (
     f"data/draft_{YEAR}.json"
