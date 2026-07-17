@@ -351,12 +351,10 @@ def height_to_inches(height):
         return 0
     
 # Combines seasons using:
-# - league strength
-# - season weighting
-# - secondary team reduction
-# - tournament filtering
+# - league strength (from league_weights.jaon)
+# - season weighting (sample size) 
+# - tournament weighting (tournament seasons are slightly reduced) 
 # - goalie weighted averages
-==================================================
 
 def calculate_weighted_stats(player):
 
