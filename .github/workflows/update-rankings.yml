@@ -1,8 +1,6 @@
 name: Update NHL Rankings
 
 on:
-  schedule:
-    - cron: "0 12 1 * *"
   workflow_dispatch:
     inputs:
       draft_year:
