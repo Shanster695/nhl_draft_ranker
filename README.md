@@ -1,15 +1,16 @@
-# NHL Draft Ranking Tool
+## NHL Draft Ranking Tool
 A tool to calculate draft rankings for the next three NHL drafts. The tool ranks players by combining production, league strength, positional value, player attributes and games played/reliability. The system spits out a "Draft Score", player type, a scouting profile based on the calculations, and a rough NHL projection.
 You can also run the tool for 2028 and 2029 drafts at the current time, but it is not quite as accurate. The default year is 2027.
 
-# How It Works
-The tool uses (not very well written) Python scripts to collect and process NHL draft prospect data from [Elite Prospects](https://www.eliteprospects.com). This would not be possible without the help of [ParseBot](https://parse.bot/marketplace/3ba08450-29f5-4688-9c03-6662454abb2f/eliteprospects-com-api)
-The initial data collection retrieves draft-eligible players, including basic profile information such as name, position, nationality, height and weight.
-Because complete player information is distributed across multiple sources, additional data collection is required for each prospect. This includes profile information such as height, weight, shooting side, date of birth, and historical statistics.
-The collected data is then normalized into a consistent JSON format and passed into the ranking system, which evaluates each player using league strength, production, position, physical profile, and other contextual factors.
+## How It Works
+The tool uses (not very well written) Python scripts to collect and process NHL draft prospect data from [Elite Prospects](https://www.eliteprospects.com). This would not be possible without the help of [ParseBot](https://parse.bot/marketplace/3ba08450-29f5-4688-9c03-6662454abb2f/eliteprospects-com-api)!
 
-# Ranking Methodology
-The tool evaluates players using a weighted scoring system designed to account for both statistical production and contextual factors.
+The initial scrape retrieves draft-eligible players, including basic profile information such as name, position, nationality, height and weight.
+Because all required player information is distributed across multiple sources, such as penalty minutes and goalie stats, additional data collection is required for each prospect.
+The collected data is then normalized into a JSON file and passed to the ranking system, which evaluates each player using the system described below!
+
+## Ranking Methodology
+The tool evaluates players using a weighted scoring system designed to account for both statisticals and contextual factors.
 The system does not compare raw statistics equally across all players. Instead, production is adjusted based on league strength, season recency, position, physical profile, and sample reliability.
 
 # Scoring Overview
@@ -25,20 +26,20 @@ A player's score is generated through several stages:
 Weighted Production =
 Raw Production × League Multiplier × Season Weight × Context Adjustments
 
-## Production Score
+# Production Score
 Skater production is calculated using:
 
 √(Points + Goals + Assists) × 10
 
 The square root prevents extremely high point totals from overwhelming all other evaluation factors while still rewarding offensive production. Goals are valued slightly higher than assists.
 
-## League Strength
+# League Strength
 A player producing against older professional competition receives more value than identical production in a lower-level junior league (KHL vs MHL vs VHL, for example.)
 
 League multipliers are stored externally in:
 data/league_weights.json
 
-## Position Adjustments
+# Position Adjustments
 The system applies different evaluation criteria depending on position.
 
 Defensemen receive adjustments for:
@@ -60,12 +61,12 @@ Forwards are evaluated primarily through:
 - Goal scoring
 - Points per game
 
-## Age and Development Factors
+# Age and Development Factors
 Players are slightly adjusted based on draft-year age.
 
 Younger players producing at comparable levels may receive additional value because they have more development runway.
 
-## Size Profile
+# Size Profile
 Physical attributes are used as modifiers rather than ranking factors.
 
 The system recognizes profiles such as:
@@ -76,7 +77,7 @@ The system recognizes profiles such as:
 
 Size alone does not increase a player's ranking, but is used as a bonus. This also helps determine player type.
 
-## Discipline Adjustment
+# Discipline Adjustment
 Penalty rates are evaluated using PIM per game. It's hard to separate minor penalties from major penalties/fighting majors/misconducts, so all penalty minutes are treated equally.
 
 Players may receive:
@@ -85,16 +86,16 @@ Players may receive:
 - Nothing
 - Penalty rate reduction
 
-## Sample Size Reliability
+# Sample Size Reliability
 The model reduces confidence in production during small seasons, such as 1 or 2 games played in a different league (common in Europe), or production during a tournament.
 Larger samples receive a small boost adjustment.
 
-## Plus/Minus Adjustment
+# Plus/Minus Adjustment
 Plus/minus is included as a contextual performance indicator. I know it's not the most reliable stat ever, but junior leagues don't track (or at least don't provide) Corsi.
 The system calculates plus/minus per game and can apply it as a configurable scoring modifier.
 Because plus/minus is heavily influenced by team environment and usage, it is not treated as a primary evaluation metric. Its influence can be adjusted through the ranking configuration file.
 
-# Player Evaluation Output
+## Player Evaluation Output
 Each prospect receives:
 
 # Draft Score
@@ -138,4 +139,4 @@ The ranking system uses Actions to periodically refresh prospect data.
 3. Generates updated ranking JSON files
 4. Commits the refreshed data for the website to display
 
-Because prospect evaluations change throughout the season, rankings may shift as new information becomes available. At the time of writing, there are only 87 ranked 2027 prospects, 29 2028 prospects, and 3 2029 prospects (two of which are on the same team...).
+Because prospect evaluations change throughout the season, rankings may shift as new information becomes available. At the time of writing, there are only 87 listed 2027 prospects, 27 listed 2028 prospects, and 3 listed 2029 prospects. As more information comes out, the scraper will update dynamically (up to 100 players, currently) 
