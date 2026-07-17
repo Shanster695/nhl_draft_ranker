@@ -4,9 +4,7 @@ import math
 import os
 
 
-# ==================================================
-# CONFIG
-# ==================================================
+# Config
 
 DRAFT_YEAR = int(
     os.getenv(
@@ -21,11 +19,7 @@ OUTPUT_FILE = f"data/ranked_{DRAFT_YEAR}.json"
 LEAGUE_FILE = "data/league_weights.json"
 CONFIG_FILE = "data/ranking_config.json"
 
-
-
-# ==================================================
-# LOAD DATA
-# ==================================================
+# Load Data
 
 with open(INPUT_FILE, "r", encoding="utf-8") as f:
     players = json.load(f)
@@ -38,15 +32,7 @@ with open(LEAGUE_FILE, "r", encoding="utf-8") as f:
 with open(CONFIG_FILE, "r", encoding="utf-8") as f:
     config = json.load(f)
 
-
-print("CONFIG LOADED:", CONFIG_FILE)
-
-
-
-# ==================================================
 # CONFIG VALUES
-# ==================================================
-
 POSITION_BONUS = config.get(
     "position_bonus",
     {}
@@ -72,25 +58,20 @@ ELITE_PPG = config.get(
     1.40
 )
 
-
-
 FORWARD_PPG = config.get(
     "forward_ppg",
     {}
 )
-
 
 DEFENSE_PPG = config.get(
     "defense_ppg",
     {}
 )
 
-
 ELITE_DEFENSE_BONUS = config.get(
     "elite_defenseman_bonus",
     1.0
 )
-
 
 ELITE_DEFENSE_PPG = config.get(
     "elite_defense_thresholds",
@@ -99,8 +80,6 @@ ELITE_DEFENSE_PPG = config.get(
     "defense_ppg",
     0.75
 )
-
-
 
 DEFENSE_SCORING_BONUS = config.get(
     "defense_scoring_bonus",
@@ -161,7 +140,6 @@ RELIABILITY_STRENGTH = config.get(
 )
 
 
-
 SCORING_WEIGHTS = config.get(
     "scoring_weights",
     {
@@ -182,8 +160,6 @@ GOALIE_CONFIG = config.get(
     {}
 )
 
-
-
 TOURNAMENT_LEAGUES = [
     "WHC-17",
     "WHC-18",
@@ -197,26 +173,15 @@ AGE_CONFIG = config.get(
     {}
 )
 
-
-
-# ==================================================
-# SEASON WEIGHTS
-# ==================================================
-
+# This is a basic offset so that the most recent season's stats count more toward the score than previous seasons
+# Helps if a player had a million points when they were 14.
 SEASON_WEIGHTS = {
-
     "2025": 1.00,
     "2024": 0.75,
     "2023": 0.50,
     "2022": 0.25
-
 }
 
-
-
-# ==================================================
-# HELPERS
-# ==================================================
 
 def get_stats(player):
 
@@ -226,18 +191,13 @@ def get_stats(player):
     )
 
 
-
 def get_team_stats(player):
-
     return get_stats(player).get(
         "teams",
         []
     )
 
-
-
 def safe_number(value):
-
     if value is None:
         return 0
 
@@ -247,8 +207,6 @@ def safe_number(value):
     except:
         return 0
 
-
-
 def is_defenseman(player):
 
     positions = player.get(
@@ -256,20 +214,16 @@ def is_defenseman(player):
         []
     )
 
-
     if isinstance(
         positions,
         str
     ):
         positions = [positions]
 
-
     return any(
         pos in ["D","LD","RD"]
         for pos in positions
     )
-
-
 
 def is_goalie(player):
 
@@ -277,7 +231,6 @@ def is_goalie(player):
         "position",
         []
     )
-
 
     if isinstance(
         positions,
@@ -295,15 +248,12 @@ def is_goalie(player):
         for pos in positions
     )
 
-
-
 def get_primary_position(player):
 
     positions = player.get(
         "position",
         []
     )
-
 
     if isinstance(
         positions,
@@ -315,9 +265,7 @@ def get_primary_position(player):
     if not positions:
         return None
 
-
     return positions[0]
-
 
 
 def get_season_weight(season):
@@ -325,19 +273,15 @@ def get_season_weight(season):
     if not season:
         return 0.75
 
-
     return SEASON_WEIGHTS.get(
         season[:4],
         0.75
     )
 
-
-
 def calculate_age(dob):
 
     if not dob:
         return None
-
 
     try:
 
@@ -346,13 +290,11 @@ def calculate_age(dob):
             "%Y-%m-%d"
         )
 
-
         draft_date = datetime(
             DRAFT_YEAR,
             6,
             30
         )
-
 
         return round(
             (
@@ -361,9 +303,7 @@ def calculate_age(dob):
             2
         )
 
-
     except:
-
         return None
 
 def calculate_age_factor(player):
@@ -373,18 +313,14 @@ def calculate_age_factor(player):
     if not age:
         return 1.0
 
-
     factors = AGE_CONFIG.get(
         "age_factors",
         {}
     )
 
-
     age = float(age)
 
-
     matched_factor = 1.0
-
 
     for threshold, multiplier in factors.items():
 
@@ -394,23 +330,12 @@ def calculate_age_factor(player):
 
         matched_factor = multiplier
 
-
-    print(
-        player.get("name"),
-        "AGE:",
-        age,
-        "MATCHED:",
-        matched_factor
-    )
-
-
     return matched_factor
 
 def height_to_inches(height):
 
     if not height:
         return 0
-
 
     try:
 
@@ -419,32 +344,26 @@ def height_to_inches(height):
             ''
         ).split("'")
 
-
         return (
             int(feet) * 12
             +
             int(inches)
         )
 
-
     except:
         return 0
     
-# ==================================================
-# WEIGHTED STAT CALCULATION
-#
 # Combines seasons using:
 # - league strength
 # - season weighting
 # - secondary team reduction
 # - tournament filtering
 # - goalie weighted averages
-# ==================================================
+==================================================
 
 def calculate_weighted_stats(player):
 
     teams = get_team_stats(player)
-
 
     totals = {
 
@@ -478,16 +397,10 @@ def calculate_weighted_stats(player):
     }
 
 
-
     if not teams:
-
         return totals
 
-
-
     seasons = {}
-
-
 
     for team in teams:
 
@@ -502,33 +415,24 @@ def calculate_weighted_stats(player):
             []
         ).append(team)
 
-
-
     league_games = {}
 
     goalie_contribution = 0
 
-
     for season, season_teams in seasons.items():
-
 
         season_weight = get_season_weight(
             season
         )
 
-
         eligible = []
 
-
-
         for team in season_teams:
-
 
             league = team.get(
                 "league",
                 ""
             )
-
 
             if league in TOURNAMENT_LEAGUES:
 
@@ -539,7 +443,6 @@ def calculate_weighted_stats(player):
                     league,
                     0.50
                 )
-
 
                 multiplier = (
                     league_weights.get(
@@ -552,11 +455,8 @@ def calculate_weighted_stats(player):
                     season_weight
                 )
 
-
                 totals["breakdown"].append({
-
                     **team,
-
                     "weight": round(
                         multiplier,
                         3
@@ -572,7 +472,6 @@ def calculate_weighted_stats(player):
                     "goalieContribution": 0
 
                 })
-
 
                 # add tournament production into totals
 
@@ -625,15 +524,10 @@ def calculate_weighted_stats(player):
 
                 eligible.append(team)
 
-
-
         if not eligible:
-
             continue
 
-
-
-        # strongest league first
+        # strongest league displays first
         eligible.sort(
 
             key=lambda x: (
@@ -654,23 +548,18 @@ def calculate_weighted_stats(player):
         )
 
 
-
         for index, team in enumerate(eligible):
-
 
             league = team.get(
                 "league",
                 ""
             )
 
-
             gp = safe_number(
                 team.get(
                     "gp"
                 )
             )
-
-
 
             multiplier = (
 
@@ -686,7 +575,6 @@ def calculate_weighted_stats(player):
             )
 
 
-
             # secondary teams matter,
             # but not as much as primary
 
@@ -694,14 +582,7 @@ def calculate_weighted_stats(player):
 
                 multiplier *= 0.35
 
-
-
-            # ==========================
-            # SKATERS
-            # ==========================
-
             if not is_goalie(player):
-
 
                 totals["points"] += (
                     safe_number(
@@ -711,7 +592,6 @@ def calculate_weighted_stats(player):
                     multiplier
                 )
 
-
                 totals["goals"] += (
                     safe_number(
                         team.get("goals")
@@ -719,7 +599,6 @@ def calculate_weighted_stats(player):
                     *
                     multiplier
                 )
-
 
                 totals["assists"] += (
                     safe_number(
@@ -729,7 +608,6 @@ def calculate_weighted_stats(player):
                     multiplier
                 )
 
-
                 totals["pim"] += (
                     safe_number(
                         team.get("pim")
@@ -738,8 +616,6 @@ def calculate_weighted_stats(player):
                     multiplier
                 )
 
-
-
                 totals["plusMinus"] += (
                     safe_number(
                         team.get("plusMinus")
@@ -747,12 +623,6 @@ def calculate_weighted_stats(player):
                     *
                     multiplier
                 )
-
-
-
-            # ==========================
-            # GOALIES
-            # ==========================
 
             else:
 
@@ -763,51 +633,34 @@ def calculate_weighted_stats(player):
 
                 if gaa is not None and gp > 0:
 
-
                     totals["gaa_total"] += (
-
                         safe_number(
                             gaa
                         )
 
                         *
-
                         gp
-
                     )
 
 
                     totals["gaa_games"] += gp
 
-
-
-
                 save = team.get(
                     "savePercentage"
                 )
 
-
                 if save is not None and gp > 0:
-
-
                     totals["save_total"] += (
-
                         safe_number(
                             save
                         )
-
                         *
-
                         gp
-
                     )
 
 
                     totals["save_games"] += gp
-
-
-
-
+                    
                 totals["wins"] += (
                     safe_number(team.get("wins"))
                     *
@@ -827,9 +680,7 @@ def calculate_weighted_stats(player):
                     )
                 )
 
-                # approximate season contribution for display only
                 if gaa is not None:
-
                     goalie_contribution += max(
                         (
                             GOALIE_CONFIG.get(
@@ -847,7 +698,6 @@ def calculate_weighted_stats(player):
                         0
                     )
 
-
                 goalie_contribution += (
                     safe_number(
                         team.get("shutouts")
@@ -860,10 +710,7 @@ def calculate_weighted_stats(player):
                 )
 
 
-
             totals["gp"] += gp
-
-
 
             league_games[league] = (
 
@@ -871,14 +718,9 @@ def calculate_weighted_stats(player):
                     league,
                     0
                 )
-
                 +
-
                 gp
-
             )
-
-
 
             totals["breakdown"].append({
 
@@ -989,7 +831,6 @@ def calculate_weighted_stats(player):
                 2
             ),
 
-
                 "goalieContribution": round(
                     (
                         max(
@@ -1030,13 +871,7 @@ def calculate_weighted_stats(player):
                 else 0
 
             })
-
-
-
-    # ==========================
-    # GOALIE AVERAGES
-    # ==========================
-
+            
     if totals["gaa_games"] > 0:
 
         totals["goalsAgainstAverage"] = (
@@ -1048,7 +883,6 @@ def calculate_weighted_stats(player):
             totals["gaa_games"]
 
         )
-
 
 
     if totals["save_games"] > 0:
@@ -1063,11 +897,6 @@ def calculate_weighted_stats(player):
 
         )
 
-
-
-    # ==========================
-    # PRIMARY LEAGUE
-    # ==========================
 
     if league_games:
 
@@ -1089,22 +918,12 @@ def calculate_weighted_stats(player):
 
         )
 
-
         totals["league"] = totals["primaryLeague"]
-
-
 
     return totals
 
 
-
-
-# ==================================================
-# PRODUCTION METRICS
-# ==================================================
-
 def calculate_ppg(player):
-
     stats = player.get(
         "weightedStats",
         {}
@@ -1127,7 +946,6 @@ def calculate_ppg(player):
 
 
 def calculate_actual_ppg(player):
-
     stats = player.get(
         "primaryStats",
         {}
@@ -1150,7 +968,6 @@ def calculate_actual_ppg(player):
 
 
 def get_display_stats(player):
-
     teams = get_team_stats(player)
 
     if not teams:
@@ -1163,10 +980,8 @@ def get_display_stats(player):
         if t.get("league") not in TOURNAMENT_LEAGUES
     ]
 
-
     if not teams:
         return {}
-
 
     # newest season first
     teams.sort(
@@ -1181,9 +996,7 @@ def get_display_stats(player):
         reverse=True
     )
 
-
     team = teams[0]
-
 
     return {
 
@@ -1227,7 +1040,6 @@ def get_display_stats(player):
     }
 
 def calculate_pm_pg(player):
-
     stats = player.get(
         "weightedStats",
         {}
@@ -1239,79 +1051,58 @@ def calculate_pm_pg(player):
         0
     )
 
-
     if gp <= 0:
 
         return 0
-
-
 
     return (
 
         safe_number(
             stats.get("plusMinus")
         )
-
         /
-
         gp
-
     )
 
 
 
 def calculate_pim_pg(player):
-
     stats = player.get(
         "weightedStats",{}
     )
-
 
     gp = stats.get(
         "gp",
         0
     )
 
-
     if gp <= 0:
 
         return 0
 
-
-
     return (
-
         safe_number(
             stats.get("pim")
         )
-
         /
-
         gp
-
     )
 
-# ==================================================
-# SIZE PROFILE
-# ==================================================
 
 def calculate_size_profile(player):
 
     height = height_to_inches(
         player.get("height")
     )
-
-
+    
     weight = safe_number(
         player.get("weight")
     )
-
 
     size = config.get(
         "size_profile",
         {}
     )
-
 
     if (
         height >= size.get("elite_size", {}).get("height", 999)
@@ -1324,8 +1115,6 @@ def calculate_size_profile(player):
             "Elite Size"
         )
 
-
-
     if (
         height >= size.get("large_frame", {}).get("height", 999)
         and
@@ -1336,8 +1125,6 @@ def calculate_size_profile(player):
             size["large_frame"]["bonus"],
             "Large Frame"
         )
-
-
 
     if (
         height <= 70
@@ -1358,45 +1145,27 @@ def calculate_size_profile(player):
             "Undersized Skill"
         )
 
-
-
     return (
         1.0,
         "Average"
     )
 
 
-
-
-# ==================================================
-# SCORING SYSTEM
-# ==================================================
-
 def calculate_score(player):
-
 
     stats = player.get(
     "weightedStats",
     {}
     )
 
-
     breakdown = {}
 
-
-
-    # ==================================================
-    # GOALIE SCORING
-    # ==================================================
-
     if is_goalie(player):
-
 
         gp = stats.get(
             "gp",
             0
         )
-
 
         gaa = stats.get(
             "goalsAgainstAverage"
@@ -1408,7 +1177,6 @@ def calculate_score(player):
             0
         )
 
-
         league_multiplier = league_weights.get(
             stats.get(
                 "league",
@@ -1416,9 +1184,7 @@ def calculate_score(player):
             ),
             0.75
         )
-
-
-
+        
         if gaa is None:
 
             gaa = GOALIE_CONFIG.get(
@@ -1426,28 +1192,21 @@ def calculate_score(player):
                 3.00
             )
 
-
-
         score = GOALIE_CONFIG.get(
             "base_score",
             50
         )
 
-
-
         gaa_bonus = max(
-
             (
-
                 GOALIE_CONFIG.get(
                     "gaa_baseline",
                     3.00
                 )
-
+                
                 -
-
+                
                 gaa
-
             )
 
             *
@@ -1465,18 +1224,14 @@ def calculate_score(player):
 
         )
 
-
-
         score += gaa_bonus
-
-
 
         shutout_bonus = (
 
             shutouts
 
             *
-
+            
             GOALIE_CONFIG.get(
                 "shutout_bonus",
                 1
@@ -1488,11 +1243,7 @@ def calculate_score(player):
 
         )
 
-
-
         score += shutout_bonus
-
-
 
         breakdown["goalieGAA"] = round(
             gaa,
@@ -1531,17 +1282,10 @@ def calculate_score(player):
                 RELIABILITY_STRENGTH
             )
 
-
         return (
             round(score,2),
             breakdown
         )
-
-
-
-    # ==================================================
-    # SKATER SCORING
-    # ==================================================
 
     points = safe_number(
         stats.get("points")
@@ -1565,17 +1309,11 @@ def calculate_score(player):
         ""
     )
 
-
     league_multiplier = league_weights.get(
         league,
         0.75
     )
 
-
-
-    # ==========================
-    # BASE PRODUCTION
-    # ==========================
 
     production_score = math.sqrt(
 
@@ -1611,7 +1349,6 @@ def calculate_score(player):
     ) * 10
 
 
-
     production_score *= league_multiplier
 
     score = production_score
@@ -1621,9 +1358,7 @@ def calculate_score(player):
         player
     )
 
-
     score *= age_multiplier
-
 
     breakdown["age"] = age_multiplier
 
@@ -1632,14 +1367,7 @@ def calculate_score(player):
         2
     )
 
-
     breakdown["league"] = league_multiplier
-
-
-
-    # ==========================
-    # DISCIPLINE
-    # ==========================
 
     pim_pg = calculate_pim_pg(player)
 
@@ -1683,11 +1411,7 @@ def calculate_score(player):
             1
         )
 
-
-    
-
     score *= discipline_multiplier
-
 
     breakdown["discipline"] = round(
     discipline_multiplier,
@@ -1699,21 +1423,11 @@ def calculate_score(player):
         3
     )
 
-
-
-    # ==========================
-    # PPG BONUS
-    # ==========================
-
-
     ppg = calculate_ppg(player)
 
     ppg_multiplier = 1.0
 
-
-
     if is_defenseman(player):
-
 
         if ppg >= DEFENSE_PPG.get("elite_ppg",999):
 
@@ -1722,18 +1436,14 @@ def calculate_score(player):
                 1
             )
 
-
         elif ppg >= DEFENSE_PPG.get("good_ppg",999):
 
             ppg_multiplier = DEFENSE_PPG.get(
                 "good_bonus",
                 1
             )
-
-
-
+            
     else:
-
 
         if ppg >= FORWARD_PPG.get("elite_ppg",999):
 
@@ -1742,7 +1452,6 @@ def calculate_score(player):
                 1
             )
 
-
         elif ppg >= FORWARD_PPG.get("high_ppg",999):
 
             ppg_multiplier = FORWARD_PPG.get(
@@ -1750,14 +1459,12 @@ def calculate_score(player):
                 1
             )
 
-
         elif ppg >= FORWARD_PPG.get("good_ppg",999):
 
             ppg_multiplier = FORWARD_PPG.get(
                 "good_bonus",
                 1
             )
-
 
         elif ppg >= FORWARD_PPG.get("solid_ppg",999):
 
@@ -1767,8 +1474,7 @@ def calculate_score(player):
             )
 
     score *= ppg_multiplier
-
-
+    
     breakdown["ppgMultiplier"] = ppg_multiplier
 
     goal_bonus = 1.0
@@ -1811,16 +1517,9 @@ def calculate_score(player):
 
     breakdown["goalScoring"] = goal_bonus
 
-
-
-    # ==========================
-    # POSITION VALUE
-    # ==========================
-
     position = get_primary_position(
         player
     )
-
 
     position_multiplier = POSITION_BONUS.get(
         position,
@@ -1828,8 +1527,7 @@ def calculate_score(player):
     )
 
     breakdown["positionProduction"] = 1.0
-
-
+    
     score *= position_multiplier
 
     position_production = config.get(
@@ -1847,16 +1545,9 @@ def calculate_score(player):
 
     breakdown["position"] = position_multiplier
 
-
-    # ==========================
-    # DEFENSE / RHD
-    # ==========================
-
     if is_defenseman(player):
-
-
+        
         score *= DEFENSE_SCORING_BONUS
-
 
         breakdown["defenseScoring"] = DEFENSE_SCORING_BONUS
 
@@ -1877,28 +1568,19 @@ def calculate_score(player):
 
             breakdown["rhd"] = 1.0
 
-
-
         if ppg >= ELITE_DEFENSE_PPG:
 
             score *= ELITE_DEFENSE_BONUS
 
             breakdown["eliteDefense"] = ELITE_DEFENSE_BONUS
 
-
-
     else:
-
-
+        
         if ppg >= ELITE_PPG:
 
             score *= ELITE_FORWARD_BONUS
 
             breakdown["eliteForward"] = ELITE_FORWARD_BONUS
-
-# ==========================
-# SIZE PROFILE
-# ==========================
 
     size_multiplier, size_label = calculate_size_profile(player)
 
@@ -1906,10 +1588,6 @@ def calculate_score(player):
 
     breakdown["size"] = size_multiplier
     breakdown["sizeProfile"] = size_label
-
-    # ==========================
-    # ARCHETYPE BONUS
-    # ==========================
 
     archetype_multiplier = 1.0
 
@@ -1929,13 +1607,8 @@ def calculate_score(player):
 
         score *= archetype_multiplier
 
-
     breakdown["archetype"] = player_type
     breakdown["archetypeMultiplier"] = archetype_multiplier
-
-    # ==========================
-# PLUS/MINUS
-# ==========================
 
     pm_pg = calculate_pm_pg(player)
 
@@ -1957,10 +1630,6 @@ def calculate_score(player):
         3
     )
 
-    # ==========================
-    # SAMPLE SIZE
-    # ==========================
-
     gp = stats.get(
         "gp",
         0
@@ -1973,10 +1642,7 @@ def calculate_score(player):
 
         breakdown["sampleSize"] = SMALL_SAMPLE_PENALTY
 
-
-
     else:
-
 
         reliability = min(
 
@@ -1986,26 +1652,19 @@ def calculate_score(player):
 
         )
 
-
         reliability_bonus = (
 
             1
-
             +
 
             reliability
             *
             RELIABILITY_STRENGTH
-
         )
-
 
         score *= reliability_bonus
 
-
         breakdown["sampleSize"] = reliability_bonus
-
-
 
     return (
         round(score,2),
@@ -2041,10 +1700,6 @@ def determine_player_type(player):
     ]
 
 
-    # ==========================
-    # DEFENSEMEN
-    # ==========================
-
     if "D" in positions:
 
         if ppg >= 0.75:
@@ -2055,28 +1710,16 @@ def determine_player_type(player):
 
         else:
             return "Two-Way Defenseman"
-
-
-
-    # ==========================
-    # GOALIES
-    # ==========================
-
+            
     if "G" in positions:
 
         return "Goaltender"
 
 
-
-    # ==========================
-    # FORWARDS
-    # ==========================
-
     if any(
         pos in ["C","LW","RW"]
         for pos in positions
     ):
-
 
         # Don't classify based only on size.
         # Large + productive = power forward candidate.
@@ -2089,10 +1732,7 @@ def determine_player_type(player):
             and
             ppg >= 0.75
         ):
-
             return "Power Forward"
-
-
 
         if (
             pm_pg >= 0.25
@@ -2102,8 +1742,6 @@ def determine_player_type(player):
 
             return "Defensive Forward"
 
-
-
         if (
             pm_pg >= 0.25
             and
@@ -2112,19 +1750,11 @@ def determine_player_type(player):
 
             return "Two-Way Forward"
 
-
-
         if ppg >= 1.0:
 
             return "Offensive Forward"
 
-
-
     return "Balanced Forward"
-
-# ==================================================
-# PROJECTION SYSTEM
-# ==================================================
 
 def generate_projection(player):
 
@@ -2140,7 +1770,6 @@ def generate_projection(player):
         "draftScore",
         0
     )
-
 
     gp = stats.get(
         "gp",
@@ -2163,14 +1792,7 @@ def generate_projection(player):
 
     summary = []
 
-
-
-    # ==================================================
-    # GOALIES
-    # ==================================================
-
     if is_goalie(player):
-
 
         if score >= 220:
 
@@ -2178,14 +1800,11 @@ def generate_projection(player):
             tier = "Franchise Goaltender"
             role = "Elite Starter"
 
-
-
         elif score >= 175:
 
             stars = 4.5
             tier = "Elite Goaltender"
             role = "Starting Goaltender"
-
 
         elif score >= 125:
 
@@ -2193,34 +1812,23 @@ def generate_projection(player):
             tier = "NHL Starter Candidate"
             role = "Tandem Goaltender"
 
-
         elif score >= 75:
 
             stars = 3.5
             tier = "Tandem Goaltender"
             role = "Backup Goaltender"
 
-
         else:
-
+            
             stars = 3
             tier = "Development Goaltender"
             role = "Depth"
-
-
 
         style.append(
             "Butterfly"
         )
 
-
-
-    # ==================================================
-    # DEFENSEMEN
-    # ==================================================
-
     elif is_defenseman(player):
-
 
         if score >= 240:
 
@@ -2259,8 +1867,6 @@ def generate_projection(player):
             tier = "Depth Defenseman"
             role = "Long-Shot Prospect"
 
-
-
         if player.get(
             "shoots"
         ) == "R":
@@ -2276,21 +1882,13 @@ def generate_projection(player):
                 "Offensive Driver"
             )
 
-
-
-    # ==================================================
-    # FORWARDS
-    # ==================================================
-
     else:
 
-
         if score >= 250:
-
+            
             stars = 5
             tier = "Franchise Forward"
             role = "Franchise Forward"
-
 
         elif score >= 190:
 
@@ -2298,23 +1896,17 @@ def generate_projection(player):
             tier = "Elite Prospect"
             role = "Top Line Forward"
 
-
-
         elif score >= 150:
 
             stars = 4
             tier = "Top Six Forward"
             role = "Top Six Forward"
 
-
-
         elif score >= 115:
 
             stars = 3.5
             tier = "Middle Six Forward"
             role = "Secondary Scorer"
-
-
 
         elif score >= 85:
 
@@ -2334,11 +1926,10 @@ def generate_projection(player):
 
 
         elif player_type == "Defensive Forward":
-
+            
             style.append(
                 "Shutdown Forward"
             )
-
 
         elif player_type == "Two-Way Forward":
 
@@ -2346,13 +1937,11 @@ def generate_projection(player):
                 "Two-Way"
             )
 
-
         elif stats.get("goals",0) > stats.get("assists",0):
 
             style.append(
                 "Goal Scorer"
             )
-
 
         else:
 
@@ -2369,7 +1958,6 @@ def generate_projection(player):
         if gp >= 50:
             confidence = "High"
 
-
     return {
 
         "stars": stars,
@@ -2382,21 +1970,11 @@ def generate_projection(player):
 
     }
 
-
-
-
-
-# ==================================================
-# SCOUTING REPORT
-# ==================================================
-
 def generate_scouting_report(player):
-
 
     stats = calculate_weighted_stats(
         player
     )
-
 
     score = player.get(
         "draftScore",
@@ -2409,13 +1987,9 @@ def generate_scouting_report(player):
         0
     )
 
-
     traits = []
 
-
-
     if is_defenseman(player):
-
 
         if player.get(
             "shoots"
@@ -2424,8 +1998,6 @@ def generate_scouting_report(player):
             traits.append(
                 "Right-shot defenseman"
             )
-
-
 
     if gp >= 60:
 
@@ -2440,15 +2012,11 @@ def generate_scouting_report(player):
             "Limited sample size"
         )
 
-
-
     if calculate_actual_ppg(player) >= 1.0:
 
         traits.append(
             "Elite offensive production"
         )
-
-
 
     if is_goalie(player):
 
@@ -2458,28 +2026,9 @@ def generate_scouting_report(player):
                 "High-end goaltending profile"
             )
 
-
-
     return traits
 
-
-
-
-
-# ==================================================
-# RUN RANKING
-# ==================================================
-
-print(
-    "Ranking",
-    len(players),
-    "players"
-)
-
-
-
 for index, player in enumerate(players):
-
 
     print(
         f"{index + 1}/{len(players)}",
@@ -2488,17 +2037,13 @@ for index, player in enumerate(players):
         )
     )
 
-
-
     player["age"] = calculate_age(
         player.get("dateOfBirth")
     )
 
-
     weighted_stats = calculate_weighted_stats(player)
 
     player["weightedStats"] = weighted_stats
-
     
     latest_teams = get_display_stats(player)
     player["primaryStats"] = latest_teams
@@ -2507,24 +2052,18 @@ for index, player in enumerate(players):
         calculate_actual_ppg(player),
         3
     )
-
     player["weightedPPG"] = round(
         calculate_ppg(player),
         3
     )
 
-
     score, breakdown = calculate_score(
         player
     )
 
-
     player["draftScore"] = score
 
-
     player["scoreBreakdown"] = breakdown
-
-
 
     player["projection"] = generate_projection(
         player
@@ -2533,28 +2072,15 @@ for index, player in enumerate(players):
     player["playerType"] = determine_player_type(
     player
     )
-
-
+    
     player["scoutingReport"] = generate_scouting_report(
         player
     )
-
-
 
     player["leagueBreakdown"] = weighted_stats.get(
         "breakdown",
         []
     )
-
-
-
-    
-
-
-
-# ==================================================
-# SORT
-# ==================================================
 
 players.sort(
 
@@ -2565,22 +2091,12 @@ players.sort(
         ),
 
     reverse=True
-
 )
-
 
 
 for index, player in enumerate(players):
 
     player["customRank"] = index + 1
-
-
-
-
-
-# ==================================================
-# SAVE
-# ==================================================
 
 with open(
     OUTPUT_FILE,
@@ -2600,15 +2116,6 @@ with open(
         ensure_ascii=False
 
     )
-
-
-
-print(
-    "Ranked",
-    len(players),
-    "players"
-)
-
 
 print(
     "Saved:",
