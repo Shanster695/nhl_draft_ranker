@@ -46,7 +46,7 @@ POSITION_PRODUCTION_BONUS = config.get(
 
 ELITE_FORWARD_BONUS = config.get(
     "elite_forward_bonus",
-    1.0
+    {} 
 )
 
 
@@ -55,7 +55,7 @@ ELITE_PPG = config.get(
     {}
 ).get(
     "elite_ppg",
-    1.40
+    {} 
 )
 
 FORWARD_PPG = config.get(
@@ -70,7 +70,7 @@ DEFENSE_PPG = config.get(
 
 ELITE_DEFENSE_BONUS = config.get(
     "elite_defenseman_bonus",
-    1.0
+    {} 
 )
 
 ELITE_DEFENSE_PPG = config.get(
@@ -78,24 +78,24 @@ ELITE_DEFENSE_PPG = config.get(
     {}
 ).get(
     "defense_ppg",
-    0.75
+    {} 
 )
 
 DEFENSE_SCORING_BONUS = config.get(
     "defense_scoring_bonus",
-    1.0
+    {} 
 )
 
 
 DEFENSE_RARITY_BONUS = config.get(
     "defense_rarity_bonus",
-    1.0
+    {) 
 )
 
 
 RHD_BONUS = config.get(
     "rhd_bonus",
-    1.0
+    {} 
 )
 
 PLUS_MINUS_WEIGHT = config.get(
@@ -127,7 +127,7 @@ SMALL_SAMPLE_PENALTY = config.get(
     {}
 ).get(
     "small_sample_penalty",
-    0.75
+    {) 
 )
 
 
@@ -136,17 +136,14 @@ RELIABILITY_STRENGTH = config.get(
     {}
 ).get(
     "reliability_strength",
-    0.15
+    {) 
 )
 
 
 SCORING_WEIGHTS = config.get(
     "scoring_weights",
-    {
-        "points": 1,
-        "goals": 1,
-        "assists": 1
-    }
+    {} 
+   
 )
 
 GOAL_SCORING = config.get(
