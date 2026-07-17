@@ -126,10 +126,10 @@ A summary of player traits generated from the evaluation system.
 A detailed breakdown of the bonuses, penalties, and multipliers applied to the player's final Draft Score.
 
 ## Model Configuration
-The ranking model is intentionally transparent. All scoring weights and league adjustments are stored in external JSON configuration files.
+All scoring weights and league adjustments are stored in external JSON configuration files.
 Users can fork the project and create their own ranking model by adjusting these values.
 
-When you download it, you will have to run scraper.py, which will generate a "draft_(YEAR).json" file. Then run ranker.py which will apply the ranking tool and output "ranked_(YEAR).json." The website itself grabs data from the ranked.json file.
+When you download it, you will have to get an API key from ParseBot, run scraper.py, which will generate a "draft_(YEAR).json" file. Then run ranker.py which will apply the ranking tool and output "ranked_(YEAR).json." The website itself grabs data from the ranked.json file.
 
 ## Data Updates
 The ranking system uses Actions to periodically refresh prospect data.
