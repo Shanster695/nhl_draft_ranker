@@ -89,7 +89,7 @@ DEFENSE_SCORING_BONUS = config.get(
 
 DEFENSE_RARITY_BONUS = config.get(
     "defense_rarity_bonus",
-    {) 
+    {} 
 )
 
 
