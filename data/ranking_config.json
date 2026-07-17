@@ -25,7 +25,7 @@
     "defense_scoring_bonus": 1.05,
 
 
-    "plus_minus_weight": 0.01,
+    "plus_minus_weight": 0.03, 
 
     "discipline_weight": 0.15,
 
