@@ -1,6 +1,6 @@
 {
     "position_bonus": {
-        "D": 1.04,
+        "D": 1.03,
         "C": 1.02,
         "LW": 1,
         "RW": 1,
@@ -10,9 +10,9 @@
 
     "position_production_bonus": {
         "D": 1.02,
-        "C": 1.02,
-        "LW": 1,
-        "RW": 1,
+        "C": 1.03,
+        "LW": 1.00,
+        "RW": 1.00,
         "F": 1.00,
         "G": 1.00
     },
@@ -22,7 +22,7 @@
 
     "rhd_bonus": 1.05,
 
-    "defense_scoring_bonus": 1.05,
+    "defense_scoring_bonus": 1.03,
 
 
     "plus_minus_weight": 0.03, 
@@ -109,13 +109,13 @@
         "large_frame": {
             "height": 74,
             "weight": 175,
-            "bonus": 1.02
+            "bonus": 1.03
         },
 
         "elite_size": {
             "height": 76,
             "weight": 195,
-            "bonus": 1.05
+            "bonus": 1.06
         },
 
         "undersized_skill": {
@@ -135,7 +135,7 @@
         "good_bonus": 1.01,
 
         "poor_pim_pg": 1.50,
-        "poor_penalty": 0.95
+        "poor_penalty": 0.92
     },
 
 
@@ -152,7 +152,7 @@
     "archetypes": {
 
         "Power Forward": {
-            "bonus": 1.02
+            "bonus": 1.04
         },
 
         "Two-Way Forward": {
@@ -168,11 +168,11 @@
         },
 
         "Offensive Defenseman": {
-            "bonus": 1.02
+            "bonus": 1.01
         },
 
         "Elite Offensive Forward": {
-            "bonus": 1.03
+            "bonus": 1.05
         }
     },
 
