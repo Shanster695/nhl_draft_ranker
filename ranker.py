@@ -6,12 +6,7 @@ import os
 
 # Config
 
-DRAFT_YEAR = int(
-    os.getenv(
-        "DRAFT_YEAR",
-        2027
-    )
-)
+DRAFT_YEAR = 2027
 
 INPUT_FILE = f"data/draft_{DRAFT_YEAR}.json"
 OUTPUT_FILE = f"data/ranked_{DRAFT_YEAR}.json"
@@ -20,13 +15,45 @@ LEAGUE_FILE = "data/league_weights.json"
 CONFIG_FILE = "data/ranking_config.json"
 
 # Load Data
+# Load Data
 
 with open(INPUT_FILE, "r", encoding="utf-8") as f:
     players = json.load(f)
 
 
 with open(LEAGUE_FILE, "r", encoding="utf-8") as f:
-    league_weights = json.load(f)
+    league_data = json.load(f)
+
+
+league_weights = {}
+
+league_ppg = {}
+
+league_age = {}
+
+for league, data in league_data.items():
+
+    if isinstance(data, dict):
+
+        league_weights[league] = data.get(
+            "league_weight",
+            1.0
+        )
+
+        league_ppg[league] = data.get(
+            "average_ppg",
+            None
+        )
+
+        league_age[league] = data.get(
+            "average_age",
+            None
+        )
+
+    else:
+        league_weights[league] = data
+        league_ppg[league] = None
+        league_age[league] = None
 
 
 with open(CONFIG_FILE, "r", encoding="utf-8") as f:
@@ -139,6 +166,10 @@ RELIABILITY_STRENGTH = config.get(
     {} 
 )
 
+LEAGUE_DOMINANCE_CONFIG = config.get(
+    "league_dominance",
+    {}
+)
 
 SCORING_WEIGHTS = config.get(
     "scoring_weights",
@@ -287,15 +318,11 @@ def calculate_age(dob):
             "%Y-%m-%d"
         )
 
-        draft_date = datetime(
-            DRAFT_YEAR,
-            6,
-            30
-        )
+        today = datetime.now()
 
         return round(
             (
-                draft_date - birth
+                today - birth
             ).days / 365.25,
             2
         )
@@ -303,31 +330,34 @@ def calculate_age(dob):
     except:
         return None
 
-def calculate_age_factor(player):
+
+
+def calculate_relative_age_factor(player, league_info):
+
+    if not AGE_CONFIG.get("enabled", True):
+        return 1.0
 
     age = player.get("age")
 
     if not age:
         return 1.0
 
-    factors = AGE_CONFIG.get(
-        "age_factors",
-        {}
+    age = int(float(age))
+
+    league_average_age = league_info.get(
+        "average_age"
     )
 
-    age = float(age)
+    if not league_average_age:
+        return 1.0
 
-    matched_factor = 1.0
+    if age < league_average_age:
+        return 1.02
 
-    for threshold, multiplier in factors.items():
+    if age > league_average_age + 1:
+        return 0.97
 
-        if age < float(threshold):
-
-            break
-
-        matched_factor = multiplier
-
-    return matched_factor
+    return 1.0
 
 def height_to_inches(height):
 
@@ -450,6 +480,10 @@ def calculate_weighted_stats(player):
                     season_weight
                 )
 
+                gp = safe_number(
+                    team.get("gp")
+                )
+
                 totals["breakdown"].append({
                     **team,
                     "weight": round(
@@ -503,13 +537,17 @@ def calculate_weighted_stats(player):
                         *
                         multiplier
                     )
+
+                # weighted games for rate stats
+                totals["gp"] += gp
+
                 league_games[league] = (
                     league_games.get(
                         league,
                         0
                     )
                     +
-                    safe_number(team.get("gp"))
+                    gp
                 )
 
                 continue
@@ -541,7 +579,11 @@ def calculate_weighted_stats(player):
             reverse=True
 
         )
+        
+        # Only count the top 3 leagues per season
+       # eligible = eligible[:3]
 
+        sample_games = 0
 
         for index, team in enumerate(eligible):
 
@@ -557,25 +599,25 @@ def calculate_weighted_stats(player):
             )
 
             multiplier = (
-
+                season_weight *
                 league_weights.get(
                     league,
-                    0.75
+                    1.0
                 )
-
-                *
-
-                season_weight
-
             )
-
-
+            
             # secondary teams matter,
             # but not as much as primary
 
             if index > 0:
 
-                multiplier *= 0.35
+                multiplier *= 0.15
+
+                # Only count primary team/season for sample size
+            if index == 0:
+                sample_games += gp
+
+            totals["gp"] += gp
 
             if not is_goalie(player):
 
@@ -705,7 +747,7 @@ def calculate_weighted_stats(player):
                 )
 
 
-            totals["gp"] += gp
+           
 
             league_games[league] = (
 
@@ -897,23 +939,12 @@ def calculate_weighted_stats(player):
 
 
         totals["primaryLeague"] = max(
-
-            league_games,
-
-            key=lambda league: (
-
-                league_weights.get(
-                    league,
-                    0.75
-                ),
-
-                league_games[league]
-
-            )
-
-        )
+    league_games,
+    key=lambda league: league_games[league]
+)
 
         totals["league"] = totals["primaryLeague"]
+        totals["sampleGames"] = sample_games
 
     return totals
 
@@ -925,8 +956,14 @@ def calculate_ppg(player):
     )
 
     gp = safe_number(
-        stats.get("gp")
+        stats.get(
+            "sampleGames",
+            stats.get("gp", 0)
+        )
     )
+
+    if gp <= 0:
+        return 0
 
     if gp <= 0:
         return 0
@@ -1042,8 +1079,8 @@ def calculate_pm_pg(player):
 
 
     gp = stats.get(
-        "gp",
-        0
+        "sampleGames",
+        stats.get("gp", 0)
     )
 
     if gp <= 0:
@@ -1067,8 +1104,8 @@ def calculate_pim_pg(player):
     )
 
     gp = stats.get(
-        "gp",
-        0
+        "sampleGames",
+        stats.get("gp", 0)
     )
 
     if gp <= 0:
@@ -1144,12 +1181,69 @@ def calculate_size_profile(player):
         1.0,
         "Average"
     )
+    
+def calculate_league_dominance(player):
 
+    stats = player.get(
+        "weightedStats",
+        {}
+    )
 
+    league = stats.get(
+        "league",
+        ""
+    )
+
+    gp = safe_number(
+        stats.get("gp")
+    )
+
+    points = safe_number(
+        stats.get("points")
+    )
+
+    if gp <= 0:
+        return 1.0
+
+    ppg = points / gp
+
+    dominance = LEAGUE_DOMINANCE_CONFIG.get(
+        league,
+        {}
+    )
+
+    baseline = dominance.get(
+        "average_ppg"
+    )
+
+    if not baseline:
+        return 1.0
+
+    max_bonus = dominance.get(
+        "max_bonus",
+        1.10
+    )
+
+    ratio = ppg / baseline
+
+    multiplier = 1 + (
+        (ratio - 1)
+        *
+        0.10
+    )
+
+    return min(
+        max(
+            multiplier,
+            0.95
+        ),
+        max_bonus
+    )
+    
 def calculate_score(player):
 
     stats = player.get(
-    "weightedStats",
+    "primaryStats",
     {}
     )
 
@@ -1157,19 +1251,31 @@ def calculate_score(player):
 
     if is_goalie(player):
 
-        gp = stats.get(
-            "gp",
-            0
+        gp = safe_number(
+            stats.get(
+                "sampleGames",
+                stats.get("gp", 0)
+            )
         )
 
         gaa = stats.get(
             "goalsAgainstAverage"
         )
 
+        if gaa is not None:
+            gaa = safe_number(gaa)
 
-        shutouts = stats.get(
-            "shutouts",
-            0
+        if gaa is None:
+            gaa = GOALIE_CONFIG.get(
+                "gaa_baseline",
+                3.00
+            )
+
+        shutouts = safe_number(
+            stats.get(
+                "shutouts",
+                0
+            )
         )
 
         league_multiplier = league_weights.get(
@@ -1179,7 +1285,7 @@ def calculate_score(player):
             ),
             0.75
         )
-        
+    
         if gaa is None:
 
             gaa = GOALIE_CONFIG.get(
@@ -1300,8 +1406,8 @@ def calculate_score(player):
 
 
     league = stats.get(
-        "league",
-        ""
+    "league",
+    ""
     )
 
     league_multiplier = league_weights.get(
@@ -1341,21 +1447,71 @@ def calculate_score(player):
 
         )
 
-    ) * 10
+    ) * 12
+    
+    
 
+    production_score *= (
+    1 +
+    ((league_multiplier - 1) * 0.5)
+    )
 
-    production_score *= league_multiplier
+    player_type = determine_player_type(player)
+
+    if is_defenseman(player):
+
+        if player_type == "Shutdown Defenseman":
+
+            ppg = calculate_ppg(player)
+
+            league_average_ppg = league_ppg.get(
+                league
+            )
+
+            if league_average_ppg is not None:
+
+                if ppg < league_average_ppg:
+
+                    production_score *= 1.10
 
     score = production_score
 
+    league_dominance_multiplier = calculate_league_dominance(player)
+    
+    score *= league_dominance_multiplier
+    
+    breakdown["leagueDominance"] = round(
+        league_dominance_multiplier,
+        3
+    )
+    
+    league = stats.get(
+    "league",
+    ""
+    )
 
-    age_multiplier = calculate_age_factor(
-        player
+    league_info = league_data.get(
+        league,
+        {}
+    )
+
+    age_multiplier = calculate_relative_age_factor(
+        player,
+        league_info
     )
 
     score *= age_multiplier
-
     breakdown["age"] = age_multiplier
+
+
+    nhl_translation = calculate_nhl_translation(player)
+
+    score *= nhl_translation
+
+    breakdown["nhlTranslation"] = round(
+        nhl_translation,
+        3
+    )
 
     breakdown["production"] = round(
         production_score,
@@ -1406,8 +1562,26 @@ def calculate_score(player):
             1
         )
 
-    score *= discipline_multiplier
+    
 
+    player_type = determine_player_type(player)
+
+    discipline_effect = 1.0
+
+    if is_defenseman(player):
+
+        if player_type == "Shutdown Defenseman":
+            discipline_effect = 0.50
+
+        elif player_type == "Two-Way Defenseman":
+            discipline_effect = 0.75
+
+    discipline_multiplier = (
+        1 +
+        ((discipline_multiplier - 1) * discipline_effect)
+    )
+
+    score *= discipline_multiplier
     breakdown["discipline"] = round(
     discipline_multiplier,
     2
@@ -1419,6 +1593,8 @@ def calculate_score(player):
     )
 
     ppg = calculate_ppg(player)
+
+    
 
     ppg_multiplier = 1.0
 
@@ -1477,7 +1653,7 @@ def calculate_score(player):
     goals = safe_number(stats.get("goals"))
     points = safe_number(stats.get("points"))
     gp = safe_number(stats.get("gp"))
-
+    
     if GOAL_SCORING.get("enabled", True):
 
         goal_ratio = goals / max(points, 1)
@@ -1577,16 +1753,56 @@ def calculate_score(player):
 
             breakdown["eliteForward"] = ELITE_FORWARD_BONUS
 
+    # ---------------------------------------------------------
+# Archetype-specific adjustments
+# ---------------------------------------------------------
+
     size_multiplier, size_label = calculate_size_profile(player)
 
-    score *= size_multiplier
+    size_effect = 1.0
+    discipline_effect = 1.0
+    rhd_effect = 1.0
 
-    breakdown["size"] = size_multiplier
+    if is_defenseman(player):
+        if player_type == "Shutdown Defenseman":
+
+            size_effect = 1.75
+            discipline_effect = 0.50
+            rhd_effect = 1.08
+
+        elif player_type == "Two-Way Defenseman":
+
+            size_effect = 1.40
+            discipline_effect = 0.75
+            rhd_effect = 1.05
+
+        elif player_type == "Offensive Defenseman":
+
+            size_effect = 0.75
+            discipline_effect = 1.00
+            rhd_effect = 1.03
+
+    # Apply size weighting
+    adjusted_size = (
+        1 +
+        ((size_multiplier - 1) * size_effect)
+    )
+
+    score *= adjusted_size
+
+    breakdown["size"] = round(adjusted_size, 3)
     breakdown["sizeProfile"] = size_label
+
+# Upgrade RHD bonus based on archetype
+    if is_defenseman(player) and player.get("shoots") == "R":
+
+        score /= RHD_BONUS
+        score *= rhd_effect
+
+        breakdown["rhd"] = rhd_effect
 
     archetype_multiplier = 1.0
 
-    player_type = determine_player_type(player)
 
     archetype_config = config.get(
         "archetypes",
@@ -1600,10 +1816,10 @@ def calculate_score(player):
             1.0
         )
 
-        score *= archetype_multiplier
-
     breakdown["archetype"] = player_type
     breakdown["archetypeMultiplier"] = archetype_multiplier
+
+    score *= archetype_multiplier
 
     pm_pg = calculate_pm_pg(player)
 
@@ -1612,10 +1828,16 @@ def calculate_score(player):
 
     if PLUS_MINUS_WEIGHT > 0:
 
-        plus_minus_multiplier += (
-            pm_pg *
-            PLUS_MINUS_WEIGHT
-        )
+        if is_defenseman(player):
+            plus_minus_multiplier = (
+                1 +
+                (pm_pg * PLUS_MINUS_WEIGHT * 0.25)
+            )
+        else:
+            plus_minus_multiplier += (
+                pm_pg *
+                PLUS_MINUS_WEIGHT
+            )
 
         score *= plus_minus_multiplier
 
@@ -1626,10 +1848,9 @@ def calculate_score(player):
     )
 
     gp = stats.get(
-        "gp",
-        0
+        "sampleGames",
+        stats.get("gp", 0)
     )
-
 
     if gp < MIN_SAMPLE_GAMES:
 
@@ -1666,9 +1887,55 @@ def calculate_score(player):
         breakdown
     )
 
+def calculate_forward_production(player):
+
+    stats = player.get(
+        "weightedStats",
+        {}
+    )
+
+    points = safe_number(stats.get("points"))
+    goals = safe_number(stats.get("goals"))
+    assists = safe_number(stats.get("assists"))
+
+    production_score = math.sqrt(
+
+        (
+            points
+            *
+            SCORING_WEIGHTS.get(
+                "points",
+                1
+            )
+
+            +
+
+            goals
+            *
+            SCORING_WEIGHTS.get(
+                "goals",
+                1
+            )
+
+            +
+
+            assists
+            *
+            SCORING_WEIGHTS.get(
+                "assists",
+                1
+            )
+        )
+
+    ) * 10
+
+    return production_score
+
+
+
 def determine_player_type(player):
 
-    ppg = calculate_actual_ppg(player)
+    ppg = calculate_ppg(player)
 
     pm_pg = calculate_pm_pg(player)
 
@@ -1700,7 +1967,11 @@ def determine_player_type(player):
         if ppg >= 0.75:
             return "Offensive Defenseman"
 
-        elif pm_pg >= 0.25:
+        elif (
+            height >= 74
+            and weight >= 180
+            and ppg < 0.50
+        ):
             return "Shutdown Defenseman"
 
         else:
@@ -1745,21 +2016,43 @@ def determine_player_type(player):
 
             return "Two-Way Forward"
 
-        if ppg >= 1.0:
 
+        points = safe_number(
+            player.get("weightedStats", {}).get("points")
+        )
+
+        assists = safe_number(
+            player.get("weightedStats", {}).get("assists")
+        )
+
+        assist_rate = 0
+
+        if points > 0:
+            assist_rate = assists / points
+
+
+        if (
+            ppg >= 0.75
+            and
+            assist_rate >= 0.55
+        ):
+            return "Playmaker"
+
+
+        if ppg >= 1.0:
             return "Offensive Forward"
 
     return "Balanced Forward"
 
 def generate_projection(player):
 
+    player_type = determine_player_type(player)
 
     stats = player.get(
         "weightedStats",
         {}
     )
 
-    player_type = determine_player_type(player)
 
     score = player.get(
         "draftScore",
@@ -1767,8 +2060,8 @@ def generate_projection(player):
     )
 
     gp = stats.get(
-        "gp",
-        0
+        "sampleGames",
+        stats.get("gp", 0)
     )
 
 
@@ -1965,6 +2258,24 @@ def generate_projection(player):
 
     }
 
+def calculate_nhl_translation(player):
+
+    multiplier = 1.0
+
+    if is_defenseman(player):
+
+        height = height_to_inches(player.get("height"))
+        weight = safe_number(player.get("weight"))
+        age = player.get("age", 18)
+
+        if height >= 74:
+            multiplier += 0.02
+
+        if weight >= 185:
+            multiplier += 0.02
+
+    return multiplier
+
 def generate_scouting_report(player):
 
     stats = player.get("weightedStats", {})
@@ -1976,9 +2287,9 @@ def generate_scouting_report(player):
 
 
     gp = stats.get(
-        "gp",
-        0
-    )
+        "sampleGames",
+        stats.get("gp", 0)
+    )   
 
     traits = []
 
