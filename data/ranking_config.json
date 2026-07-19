@@ -120,7 +120,7 @@
 
         "undersized_skill": {
             "height": 70,
-            "ppg": 0.9,
+            "ppg": 0.8,
             "bonus": 1.02
         }
     },
