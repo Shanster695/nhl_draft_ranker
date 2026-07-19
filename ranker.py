@@ -1174,7 +1174,7 @@ def calculate_size_profile(player):
         return (
             size["undersized_skill"]["bonus"],
             "Undersized Skill"
-        ):
+        )
 
     if (
         height <= 70
