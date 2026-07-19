@@ -125,7 +125,7 @@
         }, 
         "undersized_developing": {
           "weight": 125,
-            "ppg":0.6,
+            "ppg":0.55,
             "bonus": 1.01
         }
     },
