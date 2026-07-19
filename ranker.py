@@ -1,4 +1,4 @@
-import json
+25import json
 from datetime import datetime
 import math
 import os
@@ -192,7 +192,8 @@ TOURNAMENT_LEAGUES = [
     "WHC-17",
     "WHC-18",
     "WHC-20",
-    "WJC"
+    "WJC", 
+    "International-Jr"
 ]
 
 AGE_CONFIG = config.get(
