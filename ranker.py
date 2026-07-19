@@ -2011,32 +2011,6 @@ def determine_player_type(player):
         # Large + productive = power forward candidate.
         # Large + elite scoring = scorer with size.
 
-        if (
-            height >= 74
-            and
-            weight >= 200
-            and
-            ppg >= 0.75
-        ):
-            return "Power Forward"
-
-        if (
-            pm_pg >= 0.25
-            and
-            ppg < 0.75
-        ):
-
-            return "Defensive Forward"
-
-        if (
-            pm_pg >= 0.25
-            and
-            ppg >= 0.85
-        ):
-
-            return "Two-Way Forward"
-
-
         points = safe_number(
             player.get("weightedStats", {}).get("points")
         )
@@ -2050,19 +2024,49 @@ def determine_player_type(player):
         if points > 0:
             assist_rate = assists / points
 
-
         if (
+            height >= 74
+            and
+            weight >= 200
+            and
+            ppg >= 0.75
+        ):
+            return "Power Forward"
+            
+        elif (
             ppg >= 0.75
             and
             assist_rate >= 0.55
         ):
             return "Playmaker"
+            
+        
+        elif (
+            pm_pg >= 0.25
+            and
+            ppg >= 0.85
+        ):
 
+            return "Two-Way Forward"
+            
+        elif (
+            pm_pg >= 0.25
+            and
+            ppg < 0.75
+        ):
 
-        if ppg >= 1.0:
+            return "Defensive Forward"
+        elif ppg >= 1.0:
             return "Offensive Forward"
 
     return "Balanced Forward"
+        
+
+
+        
+
+
+        
 
 def generate_projection(player):
 
