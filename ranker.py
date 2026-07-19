@@ -1159,22 +1159,16 @@ def calculate_size_profile(player):
         )
 
     if (
-        height <= 70
+        weight <= size_profile["undersized_developing"]["weight"]
         and
-        calculate_ppg(player)
-        >=
-        size.get(
-            "undersized_skill",
-            {}
-        ).get(
-            "ppg",
-            999
-        )
+        ppg >= size_profile["undersized_developing"]["ppg"]
+        and
+        age <= size_profile["undersized_developing"]["max_age"]
     ):
 
         return (
-            size["undersized_skill"]["bonus"],
-            "Undersized Skill"
+            size_profile["undersized_developing"]["bonus"],
+            "Undersized Developing"
         )
 
    if (
