@@ -1177,30 +1177,19 @@ def calculate_size_profile(player):
             "Undersized Skill"
         )
 
-    if (
-        height <= 70
+   if (
+        weight <= size_profile["undersized_developing"]["weight"]
         and
-        weight <= 150
+        ppg >= size_profile["undersized_developing"]["ppg"]
         and
-        calculate_ppg(player)
-        >= 
-        size.get(
-            "undersized_developing", 
-            {}
-        ).get(
-            "ppg", 
-            999
-        )
+        age <= size_profile["undersized_developing"]["max_age"]
     ):
+        size_bonus = size_profile["undersized_developing"]["bonus"]
+            
         return (
-            size["undersized_developing"]["bonus"],
-            "Undersized Developing" 
+            1.0,
+            "Average"
         )
-        
-    return (
-        1.0,
-        "Average"
-    )
     
 def calculate_league_dominance(player):
 
