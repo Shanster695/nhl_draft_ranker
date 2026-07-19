@@ -126,6 +126,7 @@
         "undersized_developing": {
           "weight": 125,
             "ppg":0.55,
+            "max_age": 17.0,
             "bonus": 1.01
         }
     },
@@ -179,7 +180,7 @@
         },
 
         "Two-Way Forward": {
-            "bonus": 1.04
+            "bonus": 1.02
         },
 
         "Defensive Forward": {
@@ -187,7 +188,7 @@
         },
 
         "Playmaker": {
-            "bonus": 1.03
+            "bonus": 1.04
         },
 
         "Shutdown Defenseman": {
