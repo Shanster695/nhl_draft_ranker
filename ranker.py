@@ -1194,7 +1194,7 @@ def calculate_size_profile(player):
         return (
             size["undersized_developing"]["bonus"],
             "Undersized Developing" 
-        ):
+        )
         
     return (
         1.0,
