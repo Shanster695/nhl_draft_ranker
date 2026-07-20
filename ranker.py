@@ -1151,9 +1151,11 @@ def calculate_size_profile(player):
     )
 
     age = safe_number(
-        player.get("age"),
-        99
+    player.get("age")
     )
+
+   if age is None:
+    age = 99
 
     size = config.get(
         "size_profile",
@@ -1253,6 +1255,1201 @@ def calculate_league_dominance(player):
 
     return min(
         max(
+            multiplier,
+            0.95
+        ),
+        max_bonus
+    )
+    
+def calculate_score(player):
+
+    stats = player.get(
+    "primaryStats",
+    {}
+    )
+
+    breakdown = {}
+
+    if is_goalie(player):
+
+        gp = safe_number(
+            stats.get(
+                "sampleGames",
+                stats.get("gp", 0)
+            )
+        )
+
+        gaa = stats.get(
+            "goalsAgainstAverage"
+        )
+
+        if gaa is not None:
+            gaa = safe_number(gaa)
+
+        if gaa is None:
+            gaa = GOALIE_CONFIG.get(
+                "gaa_baseline",
+                3.00
+            )
+
+        shutouts = safe_number(
+            stats.get(
+                "shutouts",
+                0
+            )
+        )
+
+        league_multiplier = league_weights.get(
+            stats.get(
+                "league",
+                ""
+            ),
+            0.75
+        )
+    
+        if gaa is None:
+
+            gaa = GOALIE_CONFIG.get(
+                "gaa_baseline",
+                3.00
+            )
+
+        score = GOALIE_CONFIG.get(
+            "base_score",
+            50
+        )
+
+        gaa_bonus = max(
+            (
+                GOALIE_CONFIG.get(
+                    "gaa_baseline",
+                    3.00
+                )
+                
+                -
+                
+                gaa
+            )
+
+            *
+
+            GOALIE_CONFIG.get(
+                "gaa_weight",
+                10
+            )
+
+            *
+
+            league_multiplier,
+
+            0
+
+        )
+
+        score += gaa_bonus
+
+        shutout_bonus = (
+
+            shutouts
+
+            *
+            
+            GOALIE_CONFIG.get(
+                "shutout_bonus",
+                1
+            )
+
+            *
+
+            league_multiplier
+
+        )
+
+        score += shutout_bonus
+
+        breakdown["goalieGAA"] = round(
+            gaa,
+            2
+        )
+
+        breakdown["gaaBonus"] = round(
+            gaa_bonus,
+            2
+        )
+
+        breakdown["shutoutBonus"] = round(
+            shutout_bonus,
+            2
+        )
+
+        breakdown["shutouts"] = shutouts
+
+        breakdown["gamesPlayed"] = gp
+
+        breakdown["league"] = league_multiplier
+
+        if gp < MIN_SAMPLE_GAMES:
+
+            score *= SMALL_SAMPLE_PENALTY
+
+        elif gp >= FULL_SEASON_GAMES:
+
+            score *= (
+                1 +
+                RELIABILITY_STRENGTH
+            )
+
+            breakdown["sampleSize"] = (
+                1 +
+                RELIABILITY_STRENGTH
+            )
+
+        return (
+            round(score,2),
+            breakdown
+        )
+
+    points = safe_number(
+        stats.get("points")
+    )
+
+    goals = safe_number(
+        stats.get("goals")
+    )
+
+    assists = safe_number(
+        stats.get("assists")
+    )
+
+    gp = safe_number(
+        stats.get("gp")
+    )
+
+
+    league = stats.get(
+    "league",
+    ""
+    )
+
+    league_multiplier = league_weights.get(
+        league,
+        0.75
+    )
+
+
+    production_score = math.sqrt(
+
+        (
+
+            points
+            *
+            SCORING_WEIGHTS.get(
+                "points",
+                1
+            )
+
+            +
+
+            goals
+            *
+            SCORING_WEIGHTS.get(
+                "goals",
+                1
+            )
+
+            +
+
+            assists
+            *
+            SCORING_WEIGHTS.get(
+                "assists",
+                1
+            )
+
+        )
+
+    ) * 12
+    
+    
+
+    production_score *= (
+    1 +
+    ((league_multiplier - 1) * 0.5)
+    )
+
+    player_type = determine_player_type(player)
+
+    if is_defenseman(player):
+
+        if player_type == "Shutdown Defenseman":
+
+            ppg = calculate_ppg(player)
+
+            league_average_ppg = league_ppg.get(
+                league
+            )
+
+            if league_average_ppg is not None:
+
+                if ppg < league_average_ppg:
+
+                    production_score *= 1.10
+
+    score = production_score
+
+    league_dominance_multiplier = calculate_league_dominance(player)
+    
+    score *= league_dominance_multiplier
+    
+    breakdown["leagueDominance"] = round(
+        league_dominance_multiplier,
+        3
+    )
+    
+    league = stats.get(
+    "league",
+    ""
+    )
+
+    league_info = league_data.get(
+        league,
+        {}
+    )
+
+    age_multiplier = calculate_relative_age_factor(
+        player,
+        league_info
+    )
+
+    score *= age_multiplier
+    breakdown["age"] = age_multiplier
+
+
+    nhl_translation = calculate_nhl_translation(player)
+
+    score *= nhl_translation
+
+    breakdown["nhlTranslation"] = round(
+        nhl_translation,
+        3
+    )
+
+    breakdown["production"] = round(
+        production_score,
+        2
+    )
+
+    breakdown["league"] = league_multiplier
+
+    pim_pg = calculate_pim_pg(player)
+
+    
+    discipline_multiplier = 1.0
+
+
+    discipline = config.get(
+        "discipline",
+        {}
+    )
+
+
+    if pim_pg <= discipline.get(
+    "elite_pim_pg",
+    0
+):
+
+        discipline_multiplier = discipline.get(
+            "elite_bonus",
+            1
+        )
+
+    elif pim_pg <= discipline.get(
+        "good_pim_pg",
+        0
+    ):
+
+        discipline_multiplier = discipline.get(
+            "good_bonus",
+            1
+        )
+
+    elif pim_pg >= discipline.get(
+        "poor_pim_pg",
+        999
+    ):
+
+        discipline_multiplier = discipline.get(
+            "poor_penalty",
+            1
+        )
+
+    
+
+    player_type = determine_player_type(player)
+
+    discipline_effect = 1.0
+
+    if is_defenseman(player):
+
+        if player_type == "Shutdown Defenseman":
+            discipline_effect = 0.50
+
+        elif player_type == "Two-Way Defenseman":
+            discipline_effect = 0.75
+
+    discipline_multiplier = (
+        1 +
+        ((discipline_multiplier - 1) * discipline_effect)
+    )
+
+    score *= discipline_multiplier
+    breakdown["discipline"] = round(
+    discipline_multiplier,
+    2
+)
+
+    breakdown["pimPerGame"] = round(
+        pim_pg,
+        3
+    )
+
+    ppg = calculate_ppg(player)
+
+    
+
+    ppg_multiplier = 1.0
+
+    if is_defenseman(player):
+
+        if ppg >= DEFENSE_PPG.get("elite_ppg",999):
+
+            ppg_multiplier = DEFENSE_PPG.get(
+                "elite_bonus",
+                1
+            )
+
+        elif ppg >= DEFENSE_PPG.get("good_ppg",999):
+
+            ppg_multiplier = DEFENSE_PPG.get(
+                "good_bonus",
+                1
+            )
+            
+    else:
+
+        if ppg >= FORWARD_PPG.get("elite_ppg",999):
+
+            ppg_multiplier = FORWARD_PPG.get(
+                "elite_bonus",
+                1
+            )
+
+        elif ppg >= FORWARD_PPG.get("high_ppg",999):
+
+            ppg_multiplier = FORWARD_PPG.get(
+                "high_bonus",
+                1
+            )
+
+        elif ppg >= FORWARD_PPG.get("good_ppg",999):
+
+            ppg_multiplier = FORWARD_PPG.get(
+                "good_bonus",
+                1
+            )
+
+        elif ppg >= FORWARD_PPG.get("solid_ppg",999):
+
+            ppg_multiplier = FORWARD_PPG.get(
+                "solid_bonus",
+                1
+            )
+
+    score *= ppg_multiplier
+    
+    breakdown["ppgMultiplier"] = ppg_multiplier
+
+    goal_bonus = 1.0
+
+    goals = safe_number(stats.get("goals"))
+    points = safe_number(stats.get("points"))
+    gp = safe_number(stats.get("gp"))
+    
+    if GOAL_SCORING.get("enabled", True):
+
+        goal_ratio = goals / max(points, 1)
+        goals_per_game = goals / max(gp, 1)
+
+        if goals_per_game >= GOAL_SCORING.get(
+            "minimum_goals_per_game",
+            0.45
+        ):
+
+            if goal_ratio >= GOAL_SCORING.get(
+                "elite_goal_ratio",
+                0.55
+            ):
+
+                goal_bonus = GOAL_SCORING.get(
+                    "elite_bonus",
+                    1.06
+                )
+
+            elif goal_ratio >= GOAL_SCORING.get(
+                "good_goal_ratio",
+                0.45
+            ):
+
+                goal_bonus = GOAL_SCORING.get(
+                    "good_bonus",
+                    1.03
+                )
+
+    score *= goal_bonus
+
+    breakdown["goalScoring"] = goal_bonus
+
+    position = get_primary_position(
+        player
+    )
+
+    position_multiplier = POSITION_BONUS.get(
+        position,
+        1.0
+    )
+
+    breakdown["positionProduction"] = 1.0
+    
+    score *= position_multiplier
+
+    position_production = config.get(
+        "position_production_bonus",
+        {}
+    ).get(
+        position,
+        1.0
+    )
+
+    score *= position_production
+
+    breakdown["positionProduction"] = position_production
+
+
+    breakdown["position"] = position_multiplier
+
+    if is_defenseman(player):
+        
+        score *= DEFENSE_SCORING_BONUS
+
+        breakdown["defenseScoring"] = DEFENSE_SCORING_BONUS
+
+        breakdown["defenseRarity"] = DEFENSE_RARITY_BONUS
+
+
+        if player.get(
+            "shoots"
+        ) == "R":
+
+
+            score *= RHD_BONUS
+
+            breakdown["rhd"] = RHD_BONUS
+
+
+        else:
+
+            breakdown["rhd"] = 1.0
+
+        if ppg >= ELITE_DEFENSE_PPG:
+
+            score *= ELITE_DEFENSE_BONUS
+
+            breakdown["eliteDefense"] = ELITE_DEFENSE_BONUS
+
+    else:
+        
+        if ppg >= ELITE_PPG:
+
+            score *= ELITE_FORWARD_BONUS
+
+            breakdown["eliteForward"] = ELITE_FORWARD_BONUS
+
+    # ---------------------------------------------------------
+# Archetype-specific adjustments
+# ---------------------------------------------------------
+
+    size_multiplier, size_label = calculate_size_profile(player)
+
+    size_effect = 1.0
+    discipline_effect = 1.0
+    rhd_effect = 1.0
+
+    if is_defenseman(player):
+        if player_type == "Shutdown Defenseman":
+
+            size_effect = 1.75
+            discipline_effect = 0.50
+            rhd_effect = 1.08
+
+        elif player_type == "Two-Way Defenseman":
+
+            size_effect = 1.40
+            discipline_effect = 0.75
+            rhd_effect = 1.05
+
+        elif player_type == "Offensive Defenseman":
+
+            size_effect = 0.75
+            discipline_effect = 1.00
+            rhd_effect = 1.03
+
+    # Apply size weighting
+    adjusted_size = (
+        1 +
+        ((size_multiplier - 1) * size_effect)
+    )
+
+    score *= adjusted_size
+
+    breakdown["size"] = round(adjusted_size, 3)
+    breakdown["sizeProfile"] = size_label
+
+# Upgrade RHD bonus based on archetype
+    if is_defenseman(player) and player.get("shoots") == "R":
+
+        score /= RHD_BONUS
+        score *= rhd_effect
+
+        breakdown["rhd"] = rhd_effect
+
+    archetype_multiplier = 1.0
+
+
+    archetype_config = config.get(
+        "archetypes",
+        {}
+    )
+
+    if player_type in archetype_config:
+
+        archetype_multiplier = archetype_config[player_type].get(
+            "bonus",
+            1.0
+        )
+
+    breakdown["archetype"] = player_type
+    breakdown["archetypeMultiplier"] = archetype_multiplier
+
+    score *= archetype_multiplier
+
+    pm_pg = calculate_pm_pg(player)
+
+    plus_minus_multiplier = 1.0
+
+
+    if PLUS_MINUS_WEIGHT > 0:
+
+        if is_defenseman(player):
+            plus_minus_multiplier = (
+                1 +
+                (pm_pg * PLUS_MINUS_WEIGHT * 0.25)
+            )
+        else:
+            plus_minus_multiplier += (
+                pm_pg *
+                PLUS_MINUS_WEIGHT
+            )
+
+        score *= plus_minus_multiplier
+
+
+    breakdown["plusMinus"] = round(
+        plus_minus_multiplier,
+        3
+    )
+
+    gp = stats.get(
+        "sampleGames",
+        stats.get("gp", 0)
+    )
+
+    if gp < MIN_SAMPLE_GAMES:
+
+        score *= SMALL_SAMPLE_PENALTY
+
+        breakdown["sampleSize"] = SMALL_SAMPLE_PENALTY
+
+    else:
+
+        reliability = min(
+
+            gp / FULL_SEASON_GAMES,
+
+            1.0
+
+        )
+
+        reliability_bonus = (
+
+            1
+            +
+
+            reliability
+            *
+            RELIABILITY_STRENGTH
+        )
+
+        score *= reliability_bonus
+
+        breakdown["sampleSize"] = reliability_bonus
+
+    return (
+        round(score,2),
+        breakdown
+    )
+
+def calculate_forward_production(player):
+
+    stats = player.get(
+        "weightedStats",
+        {}
+    )
+
+    points = safe_number(stats.get("points"))
+    goals = safe_number(stats.get("goals"))
+    assists = safe_number(stats.get("assists"))
+
+    production_score = math.sqrt(
+
+        (
+            points
+            *
+            SCORING_WEIGHTS.get(
+                "points",
+                1
+            )
+
+            +
+
+            goals
+            *
+            SCORING_WEIGHTS.get(
+                "goals",
+                1
+            )
+
+            +
+
+            assists
+            *
+            SCORING_WEIGHTS.get(
+                "assists",
+                1
+            )
+        )
+
+    ) * 10
+
+    return production_score
+
+
+
+def determine_player_type(player):
+
+    ppg = calculate_ppg(player)
+
+    pm_pg = calculate_pm_pg(player)
+
+    height = height_to_inches(
+        player.get("height")
+    )
+
+    weight = safe_number(
+        player.get("weight")
+    )
+
+    positions = player.get(
+        "position",
+        []
+    )
+
+    if isinstance(positions, str):
+        positions = [positions]
+
+
+    positions = [
+        p.strip()
+        for p in positions
+    ]
+
+
+    if "D" in positions:
+
+        if ppg >= 0.75:
+            return "Offensive Defenseman"
+
+        elif (
+            height >= 74
+            and weight >= 180
+            and ppg < 0.50
+        ):
+            return "Shutdown Defenseman"
+
+        else:
+            return "Two-Way Defenseman"
+            
+    if "G" in positions:
+
+        return "Goaltender"
+
+
+    if any(
+        pos in ["C","LW","RW"]
+        for pos in positions
+    ):
+
+        # Don't classify based only on size.
+        # Large + productive = power forward candidate.
+        # Large + elite scoring = scorer with size.
+
+        points = safe_number(
+            player.get("primaryStats", {}).get("points")
+        )
+
+        assists = safe_number(
+            player.get("primaryStats", {}).get("assists")
+        )
+
+        assist_rate = 0
+
+        if points > 0:
+            assist_rate = assists / points
+
+        if (
+            height >= 74
+            and
+            weight >= 200
+            and
+            ppg >= 0.75
+        ):
+            return "Power Forward"
+            
+        elif (
+            ppg >= 0.75
+            and
+            assist_rate >= 0.55
+        ):
+            return "Playmaker"
+            
+        
+        elif (
+            pm_pg >= 0.25
+            and
+            ppg >= 0.85
+        ):
+
+            return "Two-Way Forward"
+            
+        elif (
+            pm_pg >= 0.25
+            and
+            ppg < 0.75
+        ):
+
+            return "Defensive Forward"
+        elif ppg >= 1.0:
+            return "Offensive Forward"
+
+    return "Balanced Forward"
+        
+
+
+        
+
+
+        
+
+def generate_projection(player):
+
+    player_type = determine_player_type(player)
+
+    stats = player.get(
+        "weightedStats",
+        {}
+    )
+
+
+    score = player.get(
+        "draftScore",
+        0
+    )
+
+    gp = stats.get(
+        "sampleGames",
+        stats.get("gp", 0)
+    )
+
+
+    ppg = calculate_actual_ppg(
+        player
+    )
+
+
+    stars = 2.5
+
+    tier = "Depth Prospect"
+
+    role = "Development Player"
+
+    style = []
+
+    summary = []
+
+    if is_goalie(player):
+
+        if score >= 220:
+
+            stars = 5
+            tier = "Franchise Goaltender"
+            role = "Elite Starter"
+
+        elif score >= 175:
+
+            stars = 4.5
+            tier = "Elite Goaltender"
+            role = "Starting Goaltender"
+
+        elif score >= 125:
+
+            stars = 4
+            tier = "NHL Starter Candidate"
+            role = "Tandem Goaltender"
+
+        elif score >= 75:
+
+            stars = 3.5
+            tier = "Tandem Goaltender"
+            role = "Backup Goaltender"
+
+        else:
+            
+            stars = 3
+            tier = "Development Goaltender"
+            role = "Depth"
+
+        style.append(
+            "Butterfly"
+        )
+
+    elif is_defenseman(player):
+
+        if score >= 240:
+
+            stars = 5
+            tier = "Franchise Defenseman"
+            role = "Franchise Defenseman"
+
+
+        elif score >= 190:
+
+            stars = 4.5
+            tier = "Elite Defenseman"
+            role = "Top 2 Defenseman"
+
+
+        elif score >= 150:
+
+            stars = 4
+            tier = "Top Four Defenseman"
+            role = "Top 4 Defenseman"
+
+
+        elif score >= 110:
+
+            stars = 3.5
+            tier = "Middle Pair Defenseman"
+            role = "Top 6 Defenseman"
+
+        elif score >= 80:
+            stars = 3
+            role = "Depth Defenseman"
+
+        else:
+
+            stars = 2
+            tier = "Depth Defenseman"
+            role = "Long-Shot Prospect"
+
+        if player.get(
+            "shoots"
+        ) == "R":
+
+            style.append(
+                "Right Shot"
+            )
+
+
+        if ppg >= ELITE_DEFENSE_PPG:
+
+            style.append(
+                "Offensive Driver"
+            )
+
+    else:
+
+        if score >= 250:
+            
+            stars = 5
+            tier = "Franchise Forward"
+            role = "Franchise Forward"
+
+        elif score >= 190:
+
+            stars = 4.5
+            tier = "Elite Prospect"
+            role = "Top Line Forward"
+
+        elif score >= 150:
+
+            stars = 4
+            tier = "Top Six Forward"
+            role = "Top Six Forward"
+
+        elif score >= 115:
+
+            stars = 3.5
+            tier = "Middle Six Forward"
+            role = "Secondary Scorer"
+
+        elif score >= 85:
+
+            stars = 3
+            tier = "Depth Forward"
+            role = "Depth Forward"
+
+        else:
+            stars = 2
+            role = "Longshot Prospect"
+
+        if player_type == "Power Forward":
+
+            style.append(
+                "Power Forward"
+            )
+
+
+        elif player_type == "Defensive Forward":
+            
+            style.append(
+                "Shutdown Forward"
+            )
+
+        elif player_type == "Two-Way Forward":
+
+            style.append(
+                "Two-Way"
+            )
+
+        elif stats.get("goals",0) > stats.get("assists",0):
+
+            style.append(
+                "Goal Scorer"
+            )
+
+        else:
+
+            style.append(
+                "Playmaker"
+            )
+
+    confidence = "Medium"
+
+    if is_goalie(player):
+        if gp >= 30:
+            confidence = "High"
+    else:
+        if gp >= 50:
+            confidence = "High"
+
+    return {
+
+        "stars": stars,
+
+        "role": role,
+
+        "confidence": confidence,
+
+        "summary": " | ".join(summary)
+
+    }
+
+def calculate_nhl_translation(player):
+
+    multiplier = 1.0
+
+    if is_defenseman(player):
+
+        height = height_to_inches(player.get("height"))
+        weight = safe_number(player.get("weight"))
+        age = player.get("age", 18)
+
+        if height >= 74:
+            multiplier += 0.02
+
+        if weight >= 185:
+            multiplier += 0.02
+
+    return multiplier
+
+def generate_scouting_report(player):
+
+    stats = player.get("weightedStats", {})
+
+    score = player.get(
+        "draftScore",
+        0
+    )
+
+
+    gp = stats.get(
+        "sampleGames",
+        stats.get("gp", 0)
+    )   
+
+    traits = []
+
+    if is_defenseman(player):
+
+        if player.get(
+            "shoots"
+        ) == "R":
+
+            traits.append(
+                "Right-shot defenseman"
+            )
+
+    if gp >= 60:
+
+        traits.append(
+            "Full-season sample"
+        )
+
+
+    elif gp < 20:
+
+        traits.append(
+            "Limited sample size"
+        )
+
+    if calculate_actual_ppg(player) >= 1.0:
+
+        traits.append(
+            "Elite offensive production"
+        )
+
+    if is_goalie(player):
+
+        if score >= 150:
+
+            traits.append(
+                "High-end goaltending profile"
+            )
+
+    return traits
+
+for index, player in enumerate(players):
+
+    print(
+        f"{index + 1}/{len(players)}",
+        player.get(
+            "name"
+        )
+    )
+
+    player["age"] = calculate_age(
+        player.get("dateOfBirth")
+    )
+
+    weighted_stats = calculate_weighted_stats(player)
+
+    player["weightedStats"] = weighted_stats
+    
+    latest_teams = get_display_stats(player)
+    player["primaryStats"] = latest_teams
+
+    player["ppg"] = round(
+        calculate_actual_ppg(player),
+        3
+    )
+    player["weightedPPG"] = round(
+        calculate_ppg(player),
+        3
+    )
+
+    score, breakdown = calculate_score(
+        player
+    )
+
+    player["draftScore"] = score
+
+    player["scoreBreakdown"] = breakdown
+
+    player["projection"] = generate_projection(
+        player
+    )
+
+    player["playerType"] = determine_player_type(
+    player
+    )
+    
+    player["scoutingReport"] = generate_scouting_report(
+        player
+    )
+
+    player["leagueBreakdown"] = weighted_stats.get(
+        "breakdown",
+        []
+    )
+
+players.sort(
+
+    key=lambda x:
+        x.get(
+            "draftScore",
+            0
+        ),
+
+    reverse=True
+)
+
+
+for index, player in enumerate(players):
+
+    player["customRank"] = index + 1
+
+with open(
+    OUTPUT_FILE,
+    "w",
+    encoding="utf-8"
+) as f:
+
+
+    json.dump(
+
+        players,
+
+        f,
+
+        indent=4,
+
+        ensure_ascii=False
+
+    )
+
+print(
+    "Saved:",
+    OUTPUT_FILE
+)
             multiplier,
             0.95
         ),
