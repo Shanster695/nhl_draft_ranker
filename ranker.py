@@ -2934,53 +2934,35 @@ def calculate_score(player):
 
     breakdown["position"] = position_multiplier
 
-    if is_defenseman(player):
-        
-        score *= DEFENSE_SCORING_BONUS
+   if is_defenseman(player):
 
-        breakdown["defenseScoring"] = DEFENSE_SCORING_BONUS
+    score *= DEFENSE_SCORING_BONUS
 
-        breakdown["defenseRarity"] = DEFENSE_RARITY_BONUS
+    breakdown["defenseScoring"] = DEFENSE_SCORING_BONUS
 
+    breakdown["defenseRarity"] = DEFENSE_RARITY_BONUS
 
-        if player.get(
-            "shoots"
-        ) == "R":
-
-
-            score *= RHD_BONUS
-
-            breakdown["rhd"] = RHD_BONUS
-
-
-        else:
-
-            breakdown["rhd"] = 1.0
-
-        if ppg >= ELITE_DEFENSE_PPG:
-
-            score *= ELITE_DEFENSE_BONUS
-
-            breakdown["eliteDefense"] = ELITE_DEFENSE_BONUS
-
+    if player.get("shoots") == "R":
+        score *= RHD_BONUS
+        breakdown["rhd"] = RHD_BONUS
     else:
-        
-        if ppg >= ELITE_PPG:
+        breakdown["rhd"] = 1.0
 
-            score *= ELITE_FORWARD_BONUS
+    if ppg >= ELITE_DEFENSE_PPG:
+        score *= ELITE_DEFENSE_BONUS
+        breakdown["eliteDefense"] = ELITE_DEFENSE_BONUS
 
-            breakdown["eliteForward"] = ELITE_FORWARD_BONUS
+else:
 
-    if player.get(
-            "shoots"
-        ) == "R":
+    if ppg >= ELITE_PPG:
+        score *= ELITE_FORWARD_BONUS
+        breakdown["eliteForward"] = ELITE_FORWARD_BONUS
 
-            score *= RHF_BONUS
-            breakdown["rhf"] = RHF_BONUS
-
+    if player.get("shoots") == "R":
+        score *= RHF_BONUS
+        breakdown["rhf"] = RHF_BONUS
     else:
-        breakdown["rhf"] = 1.00
-
+        breakdown["rhf"] = 1.0
     # ---------------------------------------------------------
 # Archetype-specific adjustments
 # ---------------------------------------------------------
