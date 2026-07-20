@@ -1126,9 +1126,33 @@ def calculate_size_profile(player):
     height = height_to_inches(
         player.get("height")
     )
-    
+
     weight = safe_number(
         player.get("weight")
+    )
+
+    primary = player.get(
+        "primaryStats",
+        {}
+    )
+
+    gp = safe_number(
+        primary.get("gp")
+    )
+
+    points = safe_number(
+        primary.get("points")
+    )
+
+    ppg = (
+        points / gp
+        if gp > 0
+        else 0
+    )
+
+    age = safe_number(
+        player.get("age"),
+        99
     )
 
     size = config.get(
@@ -1159,22 +1183,23 @@ def calculate_size_profile(player):
         )
 
     if (
-        weight <= size.get["undersized_developing"]["weight"]
+        weight <= size.get("undersized_developing", {}).get("weight", 999)
         and
-        player.get("ppg") >= size.get["undersized_developing"]["ppg"]
+        ppg >= size.get("undersized_developing", {}).get("ppg", 999)
         and
-        player.get("age") <= size.get["undersized_developing"]["max_age"]
-        ):
+        age <= size.get("undersized_developing", {}).get("max_age", 99)
+    ):
 
         return (
-            size.get["undersized_developing"]["bonus"],
+            size.get("undersized_developing", {}).get("bonus", 1.0),
             "Undersized Developing"
         )
-                    
+
     return (
         1.0,
         "Average"
     )
+    
 
 def calculate_league_dominance(player):
 
