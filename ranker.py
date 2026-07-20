@@ -2453,11 +2453,6 @@ print(
     "Saved:",
     OUTPUT_FILE
 )
-            multiplier,
-            0.95
-        ),
-        max_bonus
-    )
     
 def calculate_score(player):
 
