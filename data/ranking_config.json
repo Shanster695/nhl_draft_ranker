@@ -124,11 +124,11 @@
             "bonus": 1.02
         }, 
         "undersized_developing": {
-          "weight": 125,
-            "ppg":0.55,
-            "max_age": 17.0,
-            "bonus": 1.01
-        }
+    "weight": 160,
+    "ppg": 0.55,
+    "max_age": 17.5,
+    "bonus": 1.01
+}
     },
 
 
