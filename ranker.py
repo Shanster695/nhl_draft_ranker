@@ -124,6 +124,11 @@ RHD_BONUS = config.get(
     {} 
 )
 
+RHF_BONUS = config.get(
+    "righty_bonus",
+    {}
+)
+
 PLUS_MINUS_WEIGHT = config.get(
     "plus_minus_weight",
     0
@@ -2965,6 +2970,16 @@ def calculate_score(player):
             score *= ELITE_FORWARD_BONUS
 
             breakdown["eliteForward"] = ELITE_FORWARD_BONUS
+
+    if player.get(
+            "shoots"
+        ) == "R":
+
+            score *= RHF_BONUS
+            breakdown["rhf"] = RHF_BONUS
+
+    else:
+        breakdown["rhf"] = 1.00
 
     # ---------------------------------------------------------
 # Archetype-specific adjustments
