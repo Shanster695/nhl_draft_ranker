@@ -1121,6 +1121,8 @@ def calculate_pim_pg(player):
     )
 
 
+
+
 def calculate_size_profile(player):
 
     height = height_to_inches(
@@ -1131,36 +1133,21 @@ def calculate_size_profile(player):
         player.get("weight")
     )
 
-    primary = player.get(
-        "primaryStats",
-        {}
+    age = player.get(
+        "age",
+        99
     )
 
-    gp = safe_number(
-        primary.get("gp")
+    ppg = player.get(
+        "ppg",
+        0
     )
-
-    points = safe_number(
-        primary.get("points")
-    )
-
-    ppg = (
-        points / gp
-        if gp > 0
-        else 0
-    )
-
-    age = safe_number(
-    player.get("age")
-    )
-
-   if age is None:
-    age = 99
 
     size = config.get(
         "size_profile",
         {}
     )
+
 
     if (
         height >= size.get("elite_size", {}).get("height", 999)
@@ -1173,6 +1160,7 @@ def calculate_size_profile(player):
             "Elite Size"
         )
 
+
     if (
         height >= size.get("large_frame", {}).get("height", 999)
         and
@@ -1184,8 +1172,9 @@ def calculate_size_profile(player):
             "Large Frame"
         )
 
+
     if (
-        weight <= size.get("undersized_developing", {}).get("weight", 999)
+        weight <= size.get("undersized_developing", {}).get("weight", 0)
         and
         ppg >= size.get("undersized_developing", {}).get("ppg", 999)
         and
@@ -1193,14 +1182,28 @@ def calculate_size_profile(player):
     ):
 
         return (
-            size.get("undersized_developing", {}).get("bonus", 1.0),
+            size["undersized_developing"]["bonus"],
             "Undersized Developing"
         )
+
+
+    if (
+        height <= size.get("undersized_skill", {}).get("height", 0)
+        and
+        ppg >= size.get("undersized_skill", {}).get("ppg", 999)
+    ):
+
+        return (
+            size["undersized_skill"]["bonus"],
+            "Undersized Skill"
+        )
+
 
     return (
         1.0,
         "Average"
     )
+
     
 
 def calculate_league_dominance(player):
