@@ -2934,63 +2934,63 @@ def calculate_score(player):
 
     breakdown["position"] = position_multiplier
 
-   if is_defenseman(player):
-
-    score *= DEFENSE_SCORING_BONUS
-
-    breakdown["defenseScoring"] = DEFENSE_SCORING_BONUS
-
-    breakdown["defenseRarity"] = DEFENSE_RARITY_BONUS
-
-    if player.get("shoots") == "R":
-        score *= RHD_BONUS
-        breakdown["rhd"] = RHD_BONUS
-    else:
-        breakdown["rhd"] = 1.0
-
-    if ppg >= ELITE_DEFENSE_PPG:
-        score *= ELITE_DEFENSE_BONUS
-        breakdown["eliteDefense"] = ELITE_DEFENSE_BONUS
-
-else:
-
-    if ppg >= ELITE_PPG:
-        score *= ELITE_FORWARD_BONUS
-        breakdown["eliteForward"] = ELITE_FORWARD_BONUS
-
-    if player.get("shoots") == "R":
-        score *= RHF_BONUS
-        breakdown["rhf"] = RHF_BONUS
-    else:
-        breakdown["rhf"] = 1.0
-    # ---------------------------------------------------------
-# Archetype-specific adjustments
-# ---------------------------------------------------------
-
-    size_multiplier, size_label = calculate_size_profile(player)
-
-    size_effect = 1.0
-    discipline_effect = 1.0
-    rhd_effect = 1.0
-
     if is_defenseman(player):
-        if player_type == "Shutdown Defenseman":
 
-            size_effect = 1.75
-            discipline_effect = 0.50
-            rhd_effect = 1.08
+        score *= DEFENSE_SCORING_BONUS
 
-        elif player_type == "Two-Way Defenseman":
+        breakdown["defenseScoring"] = DEFENSE_SCORING_BONUS
 
-            size_effect = 1.40
-            discipline_effect = 0.75
-            rhd_effect = 1.05
+        breakdown["defenseRarity"] = DEFENSE_RARITY_BONUS
 
-        elif player_type == "Offensive Defenseman":
+        if player.get("shoots") == "R":
+            score *= RHD_BONUS
+            breakdown["rhd"] = RHD_BONUS
+        else:
+            breakdown["rhd"] = 1.0
 
-            size_effect = 0.75
-            discipline_effect = 1.00
-            rhd_effect = 1.03
+        if ppg >= ELITE_DEFENSE_PPG:
+            score *= ELITE_DEFENSE_BONUS
+            breakdown["eliteDefense"] = ELITE_DEFENSE_BONUS
+
+    else:
+
+        if ppg >= ELITE_PPG:
+            score *= ELITE_FORWARD_BONUS
+            breakdown["eliteForward"] = ELITE_FORWARD_BONUS
+
+        if player.get("shoots") == "R":
+            score *= RHF_BONUS
+            breakdown["rhf"] = RHF_BONUS
+        else:
+            breakdown["rhf"] = 1.0
+        # ---------------------------------------------------------
+    # Archetype-specific adjustments
+    # ---------------------------------------------------------
+
+        size_multiplier, size_label = calculate_size_profile(player)
+
+        size_effect = 1.0
+        discipline_effect = 1.0
+        rhd_effect = 1.0
+
+        if is_defenseman(player):
+            if player_type == "Shutdown Defenseman":
+
+                size_effect = 1.75
+                discipline_effect = 0.50
+                rhd_effect = 1.08
+
+            elif player_type == "Two-Way Defenseman":
+
+                size_effect = 1.40
+                discipline_effect = 0.75
+                rhd_effect = 1.05
+
+            elif player_type == "Offensive Defenseman":
+
+                size_effect = 0.75
+                discipline_effect = 1.00
+                rhd_effect = 1.03
 
     # Apply size weighting
     adjusted_size = (
