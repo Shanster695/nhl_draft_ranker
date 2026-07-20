@@ -166,10 +166,10 @@
     "tournament_weights": {
 
         "WHC-17": 0.65,
-        "WHC-18": 0.70,
-        "WHC-20": 0.75,
-        "WJC": 0.75,
-        "International-Jr": 0.60
+        "WHC-18": 0.75,
+        "WHC-20": 0.9,
+        "WJC": 0.8,
+        "International-Jr": 0.75
     },
 
 
